@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waze Costume Contest 2026</title>
+    <title>Heroes vs Villains 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -66,12 +66,6 @@
             transform: translateY(4px);
         }
 
-        /* Headings */
-        h1, h2, h3 {
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
         /* Mood Bubble (Avatar placeholder) */
         .mood-bg {
             background: radial-gradient(circle at 30% 30%, var(--waze-cyan), #0091C8);
@@ -85,19 +79,19 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <header class="sticky top-4 z-50 px-4">
+    <header class="sticky top-4 z-40 px-4">
         <div class="container mx-auto max-w-5xl bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 p-3 flex justify-between items-center">
             <div class="flex items-center gap-3 pl-2">
-                <div class="mood-bg w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-inner border-2 border-white">
-                    👻
+                <div class="w-12 h-10 rounded-full flex items-center justify-center text-xl shadow-inner border-2 border-white relative overflow-hidden bg-gradient-to-r from-blue-500 to-red-500">
+                    <span class="relative z-10 flex gap-1">🦸🦹</span>
                 </div>
-                <h1 class="text-xl md:text-2xl font-extrabold text-[#4A435C]">
-                    Costume<span class="text-[#33CCFF]">Contest</span>
+                <h1 class="text-xl md:text-2xl font-extrabold text-[#4A435C] tracking-tight">
+                    Heroes <span class="text-gray-400 text-lg">vs</span> <span class="text-[#FF5C5C]">Villains</span>
                 </h1>
             </div>
             
             <button onclick="openUploadModal()" class="hidden md:flex bg-[#33CCFF] hover:bg-[#2ebbe6] text-white font-bold py-2 px-6 rounded-full shadow-md transition items-center gap-2 border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1">
-                <span>Upload Costume</span>
+                <span>Add Costume</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
             </button>
         </div>
@@ -106,14 +100,14 @@
     <main class="container mx-auto max-w-5xl p-4 flex-grow relative z-10">
         
         <div class="text-center py-8">
-            <h2 class="text-4xl md:text-5xl font-black text-[#4A435C] mb-2">Who's the best dressed?</h2>
-            <p class="text-gray-500 font-semibold text-lg">Vote for your favorite Wazer.</p>
+            <h2 class="text-4xl md:text-5xl font-black text-[#4A435C] mb-2">Choose Your Side!</h2>
+            <p class="text-gray-500 font-semibold text-lg">Vote for the most epic Hero or Villain on the map.</p>
         </div>
 
         <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
             <div class="col-span-full text-center py-20">
-                <div class="inline-block animate-bounce text-4xl mb-4">🚙</div>
-                <p class="text-xl font-bold text-gray-400">Driving to destination...</p>
+                <div class="inline-block animate-bounce text-5xl mb-4">💥</div>
+                <p class="text-xl font-bold text-gray-400">Assembling forces...</p>
             </div>
         </div>
 
@@ -132,7 +126,7 @@
                             <tr class="text-gray-400 text-sm uppercase tracking-wider">
                                 <th class="p-4 pl-6 font-bold">Rank</th>
                                 <th class="p-4 font-bold">Wazer</th>
-                                <th class="p-4 font-bold">Costume</th>
+                                <th class="p-4 font-bold">Look</th>
                                 <th class="p-4 pr-6 text-right font-bold">Votes</th>
                             </tr>
                         </thead>
@@ -180,7 +174,7 @@
                         </div>
                         <div>
                             <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-1">Costume Name</label>
-                            <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="e.g. Traffic Jam" required>
+                            <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="e.g. The Dark Wazer" required>
                         </div>
                     </div>
 
@@ -212,8 +206,8 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 -translate-y-32 transition-all duration-500 z-[60] bg-[#4A435C] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10">
-        <span id="toast-icon" class="text-xl">✅</span>
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[100] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10 w-auto min-w-[300px] justify-center">
+        <span id="toast-icon" class="text-2xl">✅</span>
         <span id="toast-msg">Notification</span>
     </div>
 
@@ -274,9 +268,9 @@
             if (costumes.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-400">
-                        <span class="text-6xl mb-4 opacity-50">🗺️</span>
-                        <p class="text-xl font-bold">Map is empty!</p>
-                        <p class="text-sm">Be the first to add a sighting.</p>
+                        <span class="text-6xl mb-4 opacity-50 animate-pulse">💥</span>
+                        <p class="text-xl font-bold">The battlefield is empty!</p>
+                        <p class="text-sm">Be the first to deploy a Hero or Villain.</p>
                     </div>`;
                 return;
             }
@@ -376,7 +370,7 @@
                     createdAt: Date.now()
                 });
 
-                showToast("Sent to Map!", "👻");
+                showToast("Sent to Map!", "🚀");
                 closeUploadModal();
                 e.target.reset();
                 document.getElementById('image-preview-area').style.display = 'block';
@@ -398,7 +392,6 @@
 
             if (!voterLdap) return;
 
-            // Optimistic UI check
             const costume = costumes.find(c => c.id === costumeId);
             if (costume && costume.voters && costume.voters.map(v => v.toLowerCase()).includes(voterLdap)) {
                 showToast("Already voted!", "✋");
@@ -469,11 +462,14 @@
             document.getElementById('toast-msg').textContent = message;
             document.getElementById('toast-icon').textContent = icon;
             
-            toast.classList.remove('-translate-y-32');
+            // Slide down into view (translate-y-0)
+            toast.classList.remove('-translate-y-40');
             toast.classList.add('translate-y-0');
+            
             setTimeout(() => {
+                // Slide back up out of view
                 toast.classList.remove('translate-y-0');
-                toast.classList.add('-translate-y-32');
+                toast.classList.add('-translate-y-40');
             }, 3000);
         }
 
