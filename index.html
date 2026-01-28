@@ -71,6 +71,21 @@
             background: radial-gradient(circle at 30% 30%, var(--waze-cyan), #0091C8);
         }
         
+        /* Tab Styles */
+        .tab-active {
+            background-color: var(--waze-dark);
+            color: white;
+            shadow: lg;
+        }
+        .tab-inactive {
+            background-color: transparent;
+            color: #9CA3AF;
+        }
+        .tab-inactive:hover {
+            background-color: #f3f4f6;
+            color: var(--waze-dark);
+        }
+        
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -101,9 +116,20 @@
 
     <main class="container mx-auto max-w-5xl p-4 flex-grow relative z-10">
         
-        <div class="text-center py-8">
-            <h2 class="text-4xl md:text-5xl font-black text-[#4A435C] mb-2">Choose Your Side!</h2>
-            <p class="text-gray-500 font-semibold text-lg">Vote for the most epic Hero or Villain on the map.</p>
+        <div class="text-center py-6 md:py-8">
+            <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2">Choose Your Side!</h2>
+            <p class="text-gray-500 font-semibold text-lg">Vote for the most epic costumes.</p>
+        </div>
+
+        <div class="flex justify-center mb-8 sticky top-24 z-30">
+            <div class="bg-white p-1.5 rounded-full shadow-xl border-2 border-white inline-flex relative">
+                <button onclick="switchCategory('single')" id="tab-single" class="tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2">
+                    <span>👤</span> Single
+                </button>
+                <button onclick="switchCategory('group')" id="tab-group" class="tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2">
+                    <span>👨‍👩‍👧‍👦</span> Group
+                </button>
+            </div>
         </div>
 
         <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
@@ -118,7 +144,7 @@
                 <div class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">
                     🏆
                 </div>
-                <h2 class="text-3xl font-bold text-[#4A435C]">Leaderboard</h2>
+                <h2 class="text-3xl font-bold text-[#4A435C]">Leaderboard <span id="lb-title-suffix" class="text-gray-400 text-lg font-normal ml-2">(Single)</span></h2>
             </div>
             
             <div class="bg-white rounded-[2rem] shadow-xl border-4 border-white overflow-hidden">
@@ -156,16 +182,37 @@
                 </div>
 
                 <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-5">
+                    
                     <div>
-                        <div class="border-4 border-dashed border-gray-200 rounded-3xl p-8 text-center cursor-pointer hover:border-[#33CCFF] hover:bg-blue-50 transition group" onclick="document.getElementById('file-input').click()">
+                        <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-2">Contest Type</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="contestType" value="single" checked class="peer sr-only">
+                                <div class="rounded-xl border-2 border-gray-100 bg-gray-50 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 transition">
+                                    <div class="text-2xl mb-1">👤</div>
+                                    <div class="font-bold text-sm text-[#4A435C]">Single</div>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="contestType" value="group" class="peer sr-only">
+                                <div class="rounded-xl border-2 border-gray-100 bg-gray-50 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 transition">
+                                    <div class="text-2xl mb-1">👨‍👩‍👧‍👦</div>
+                                    <div class="font-bold text-sm text-[#4A435C]">Group</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="border-4 border-dashed border-gray-200 rounded-3xl p-6 text-center cursor-pointer hover:border-[#33CCFF] hover:bg-blue-50 transition group" onclick="document.getElementById('file-input').click()">
                             <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
                             <div id="image-preview-area" class="group-hover:scale-110 transition duration-300">
-                                <div class="w-16 h-16 bg-blue-100 text-[#33CCFF] rounded-full mx-auto flex items-center justify-center mb-2">
-                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <div class="w-14 h-14 bg-blue-100 text-[#33CCFF] rounded-full mx-auto flex items-center justify-center mb-2">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                 </div>
                                 <p class="text-sm font-bold text-gray-400">Tap to snap</p>
                             </div>
-                            <img id="preview-img" class="hidden w-full h-48 object-cover rounded-2xl shadow-sm">
+                            <img id="preview-img" class="hidden w-full h-40 object-cover rounded-2xl shadow-sm">
                         </div>
                     </div>
                     
@@ -236,6 +283,7 @@
 
         let costumes = [];
         let currentUser = null;
+        let activeCategory = 'single'; // Default to single contest
 
         async function init() {
             try {
@@ -253,6 +301,29 @@
         }
         init();
 
+        window.switchCategory = (cat) => {
+            activeCategory = cat;
+            
+            // UI Toggle
+            const tabSingle = document.getElementById('tab-single');
+            const tabGroup = document.getElementById('tab-group');
+            const lbSuffix = document.getElementById('lb-title-suffix');
+            
+            if (cat === 'single') {
+                tabSingle.className = "tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
+                tabGroup.className = "tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
+                lbSuffix.textContent = "(Single)";
+            } else {
+                tabSingle.className = "tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
+                tabGroup.className = "tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
+                lbSuffix.textContent = "(Group)";
+            }
+
+            // Re-render
+            renderGrid();
+            renderRankings();
+        }
+
         function setupRealtimeListener() {
             const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
             onSnapshot(colRef, (snapshot) => {
@@ -265,19 +336,29 @@
             });
         }
 
+        function getFilteredCostumes() {
+            return costumes.filter(c => {
+                // If no category exists (legacy data), treat as 'single'
+                const cat = c.category || 'single';
+                return cat === activeCategory;
+            });
+        }
+
         function renderGrid() {
             const grid = document.getElementById('costume-grid');
-            if (costumes.length === 0) {
+            const filtered = getFilteredCostumes();
+
+            if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-400">
                         <span class="text-6xl mb-4 opacity-50 animate-pulse">💥</span>
-                        <p class="text-xl font-bold">The battlefield is empty!</p>
-                        <p class="text-sm">Be the first to deploy a Hero or Villain.</p>
+                        <p class="text-xl font-bold">No ${activeCategory} costumes yet!</p>
+                        <p class="text-sm">Be the first to deploy.</p>
                     </div>`;
                 return;
             }
 
-            const sortedCostumes = [...costumes].sort((a, b) => b.createdAt - a.createdAt);
+            const sortedCostumes = [...filtered].sort((a, b) => b.createdAt - a.createdAt);
 
             grid.innerHTML = sortedCostumes.map(c => {
                 const voteCount = c.voters ? c.voters.length : 0;
@@ -311,11 +392,17 @@
 
         function renderRankings() {
             const list = document.getElementById('ranking-list');
-            const sorted = [...costumes].sort((a, b) => {
+            const filtered = getFilteredCostumes();
+            const sorted = [...filtered].sort((a, b) => {
                 const votesA = a.voters ? a.voters.length : 0;
                 const votesB = b.voters ? b.voters.length : 0;
                 return votesB - votesA;
             });
+
+            if (sorted.length === 0) {
+                list.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400 font-bold">No entries in this category yet.</td></tr>`;
+                return;
+            }
 
             list.innerHTML = sorted.map((c, index) => {
                 const votes = c.voters ? c.voters.length : 0;
@@ -353,6 +440,9 @@
             const fileInput = document.getElementById('file-input');
             const ldap = document.getElementById('uploader-ldap').value.trim();
             const name = document.getElementById('costume-name').value.trim();
+            
+            // Get selected contest type
+            const contestType = document.querySelector('input[name="contestType"]:checked').value;
 
             if (!fileInput.files[0]) {
                 showToast("Photo needed!", "📸");
@@ -371,6 +461,7 @@
                     ldap: ldap,
                     costumeName: name,
                     image: base64Image,
+                    category: contestType, // NEW field
                     voters: [],
                     createdAt: Date.now()
                 });
