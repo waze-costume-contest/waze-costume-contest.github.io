@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heroes vs Villains 2026</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦸</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -24,7 +25,7 @@
             font-family: 'Nunito', sans-serif;
             background-color: var(--waze-offwhite);
             color: var(--waze-dark);
-            /* REPLACED DOTS WITH CLEAN SUBTLE GRADIENT */
+            /* Clean subtle gradient background */
             background-image: linear-gradient(to bottom, #ffffff, #eef2f6);
             background-attachment: fixed;
         }
@@ -80,16 +81,22 @@
 
     <header class="sticky top-4 z-40 px-4">
         <div class="container mx-auto max-w-5xl bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 p-3 flex justify-between items-center">
-            <div class="flex items-center gap-3 pl-2">
-                <div class="w-12 h-10 rounded-full flex items-center justify-center text-xl shadow-inner border-2 border-white relative overflow-hidden bg-gradient-to-r from-blue-500 to-red-500">
-                    <span class="relative z-10 flex gap-1">🦸🦹</span>
+            <div class="flex items-center gap-3 md:gap-4 pl-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Waze_logo_2020.svg" alt="Waze" class="h-8 md:h-10 w-auto">
+                
+                <div class="hidden md:block h-8 w-0.5 bg-gray-200 rounded-full"></div>
+
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-lg shadow-inner border-2 border-white relative overflow-hidden bg-gradient-to-r from-blue-500 to-red-500 flex-shrink-0">
+                        <span class="relative z-10 flex gap-0.5 md:gap-1">🦸🦹</span>
+                    </div>
+                    <h1 class="text-lg md:text-2xl font-extrabold text-[#4A435C] tracking-tight leading-none">
+                        Heroes <span class="text-gray-400 text-base md:text-lg">vs</span> <span class="text-[#FF5C5C]">Villains</span>
+                    </h1>
                 </div>
-                <h1 class="text-xl md:text-2xl font-extrabold text-[#4A435C] tracking-tight">
-                    Heroes <span class="text-gray-400 text-lg">vs</span> <span class="text-[#FF5C5C]">Villains</span>
-                </h1>
             </div>
             
-            <button onclick="openUploadModal()" class="hidden md:flex bg-[#33CCFF] hover:bg-[#2ebbe6] text-white font-bold py-2 px-6 rounded-full shadow-md transition items-center gap-2 border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1">
+            <button onclick="openUploadModal()" class="hidden md:flex bg-[#33CCFF] hover:bg-[#2ebbe6] text-white font-bold py-2 px-6 rounded-full shadow-md transition items-center gap-2 border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 flex-shrink-0">
                 <span>Add Costume</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
             </button>
