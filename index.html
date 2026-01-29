@@ -238,7 +238,7 @@
                     </div>
 
                     <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg mt-2">
-                        Post to Map
+                        Join the Battle! 💥
                     </button>
                 </form>
             </div>
@@ -266,13 +266,18 @@
     </div>
 
     <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-6 text-center">
-            <div class="text-3xl mb-4">👮‍♂️</div>
+        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-6 text-center relative">
+            
+            <button onclick="closeAdminPanel()" class="absolute top-4 left-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="text-3xl mb-4 mt-2">👮‍♂️</div>
             <h3 class="text-xl font-black text-[#4A435C] mb-4">Admin Control</h3>
             
             <div id="admin-login-view">
                 <input type="text" id="admin-ldap" class="w-full px-4 py-3 bg-gray-100 rounded-xl mb-4 text-center font-bold" placeholder="Enter Admin LDAP">
-                <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl">Unlock</button>
+                <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 transition-all">Unlock</button>
             </div>
 
             <div id="admin-controls-view" class="hidden">
@@ -284,8 +289,7 @@
                 <p class="text-xs text-gray-400">Close this panel to delete costumes from the main grid.</p>
             </div>
             
-            <button onclick="closeAdminPanel()" class="mt-4 text-gray-400 font-bold text-sm">Close</button>
-        </div>
+            </div>
     </div>
 
     <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[100] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10 w-auto min-w-[300px] justify-center">
@@ -300,7 +304,7 @@
 
         // --- CONFIGURATION ---
         // 🔒 ADD ADMIN LDAPS HERE (lowercase)
-        const ADMIN_USERS = ['admin', 'jdoe', 'testuser']; 
+        const ADMIN_USERS = ['shirelk', 'frim', 'szilka']; 
         // ---------------------
 
         const firebaseConfig = {
@@ -605,7 +609,7 @@
                     createdAt: Date.now()
                 });
 
-                showToast("Sent to Map!", "🚀");
+                showToast("You entered the arena", "🏟️");
                 closeUploadModal();
                 e.target.reset();
                 document.getElementById('image-preview-area').style.display = 'block';
