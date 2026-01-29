@@ -295,7 +295,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, getDoc, setDoc, deleteDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // --- CONFIGURATION ---
@@ -571,9 +571,18 @@
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
             const fileInput = document.getElementById('file-input');
-            const ldap = document.getElementById('uploader-ldap').value.trim();
+            const ldap = document.getElementById('uploader-ldap').value.trim().toLowerCase();
             const name = document.getElementById('costume-name').value.trim();
             const contestType = document.querySelector('input[name="contestType"]:checked').value;
+
+            const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
+            const q = query(colRef, where("ldap", "==", ldap));
+            const existing = await getDocs(q);
+        
+            if (!existing.empty) {
+                showToast("You have already entered a costume!", "🚫");
+                return;
+            }
 
             if (!fileInput.files[0]) {
                 showToast("Photo needed!", "📸");
@@ -587,7 +596,6 @@
 
             try {
                 const base64Image = await compressImage(fileInput.files[0]);
-                const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
                 await addDoc(colRef, {
                     ldap: ldap,
                     costumeName: name,
