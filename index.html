@@ -486,7 +486,7 @@
                 let buttonHtml;
                 if (votingOpen) {
                     buttonHtml = `
-                        <button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#e2eaf5] text-[#33CCFF] font-black py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 bg-[#33CCFF] group-hover:text-white">
+                        <button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#33CCFF] hover:bg-[#2ebbe6] text-[#e2eaf5] font-black py-3 px-4 rounded-xl shadow-md transition-colors duration-200 border-b-4 border-[#0091C8] active:border-b-0 flex items-center justify-center gap-2 bg-[#33CCFF]">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
                             Like
                         </button>
