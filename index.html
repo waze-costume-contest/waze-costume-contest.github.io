@@ -18,7 +18,6 @@
             --waze-dark: #4A435C;
             --waze-offwhite: #F2F4F7;
         }
-        
         body {
             font-family: 'Nunito', sans-serif;
             background-color: var(--waze-offwhite);
@@ -26,7 +25,6 @@
             background-image: linear-gradient(to bottom, #ffffff, #eef2f6);
             background-attachment: fixed;
         }
-
         .waze-card {
             background: white;
             border-radius: 1.5rem;
@@ -34,33 +32,16 @@
             transition: transform 0.2s, box-shadow 0.2s;
             border: 2px solid #fff;
         }
-        
-        .waze-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 0 #e5e7eb, 0 12px 24px rgba(0,0,0,0.1);
-        }
-
+        .waze-card:hover { transform: translateY(-4px); box-shadow: 0 8px 0 #e5e7eb, 0 12px 24px rgba(0,0,0,0.1); }
         .btn-waze-primary {
             background-color: var(--waze-cyan);
             color: white;
             border-bottom: 4px solid var(--waze-blue-dark);
         }
-        .btn-waze-primary:active {
-            border-bottom-width: 0px;
-            transform: translateY(4px);
-        }
-
-        .tab-active {
-            background-color: var(--waze-dark);
-            color: white;
-        }
-        .tab-inactive {
-            background-color: transparent;
-            color: #9CA3AF;
-        }
-        
+        .btn-waze-primary:active { border-bottom-width: 0px; transform: translateY(4px); }
+        .tab-active { background-color: var(--waze-dark); color: white; }
+        .tab-inactive { background-color: transparent; color: #9CA3AF; }
         ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; border: 3px solid var(--waze-offwhite); }
     </style>
 </head>
@@ -76,8 +57,7 @@
                     Heroes <span class="text-gray-400 text-base md:text-lg">vs</span> <span class="text-[#FF5C5C]">Villains</span>
                 </h1>
             </div>
-            
-            <button onclick="openUploadModal()" class="md:flex bg-[#33CCFF] hover:bg-[#2ebbe6] text-white font-bold py-2 px-6 rounded-full shadow-md transition items-center gap-2 border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1">
+            <button onclick="openUploadModal()" class="flex bg-[#33CCFF] hover:bg-[#2ebbe6] text-white font-bold py-2 px-6 rounded-full shadow-md transition items-center gap-2 border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1">
                 <span class="hidden sm:inline">Add Costume</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
             </button>
@@ -88,11 +68,10 @@
         <div class="bg-blue-50 border-2 border-blue-100 rounded-3xl p-5 md:p-6 shadow-sm flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
             <div class="bg-blue-500 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md flex-shrink-0">📢</div>
             <div>
-                <h4 class="font-black text-blue-900 text-lg leading-tight mb-1">Join the contest!</h4>
-                <p class="text-blue-800 text-sm md:text-base leading-relaxed">
-                    Take a photo at the photo wall and upload it here by <span class="font-bold">8:45 PM</span>. 
-                    Voting runs from <span class="font-bold">8:45 PM to 9:00 PM</span> (3 votes per category). 
-                    Winners announced after the judges' vote!
+                <h4 class="font-black text-blue-900 text-lg mb-1">Join the contest!</h4>
+                <p class="text-blue-800 text-sm md:text-base">
+                    Take a photo at the photo wall and upload by <span class="font-bold">8:45 PM</span>. 
+                    Voting runs <span class="font-bold">8:45 PM - 9:00 PM</span>. You can cast 3 votes per category.
                 </p>
             </div>
         </div>
@@ -106,22 +85,17 @@
 
         <div class="flex justify-center mb-8 sticky top-24 z-30">
             <div class="bg-white p-1.5 rounded-full shadow-xl border-2 border-white inline-flex">
-                <button onclick="switchCategory('single')" id="tab-single" class="tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300">
-                    👤 Single
-                </button>
-                <button onclick="switchCategory('group')" id="tab-group" class="tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300">
-                    👨‍👩‍👧‍👦 Group
-                </button>
+                <button onclick="switchCategory('single')" id="tab-single" class="tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300">👤 Single</button>
+                <button onclick="switchCategory('group')" id="tab-group" class="tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300">👨‍👩‍👧‍👦 Group</button>
             </div>
         </div>
 
-        <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-            </div>
+        <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"></div>
 
         <section id="leaderboard-section" class="mt-16 mb-20 hidden">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">🏆</div>
-                <h2 class="text-3xl font-bold text-[#4A435C]">Leaderboard <span id="lb-title-suffix" class="text-gray-400 text-lg font-normal ml-2">(Single)</span></h2>
+                <h2 class="text-3xl font-bold text-[#4A435C]">Live Standings</h2>
             </div>
             <div class="bg-white rounded-[2rem] shadow-xl border-4 border-white overflow-hidden">
                 <table class="w-full text-left border-collapse">
@@ -129,7 +103,6 @@
                         <tr class="text-gray-400 text-sm uppercase font-bold">
                             <th class="p-4 pl-6">Rank</th>
                             <th class="p-4">Wazer</th>
-                            <th class="hidden md:table-cell p-4">Look</th>
                             <th class="p-4 pr-6 text-right">Votes</th>
                         </tr>
                     </thead>
@@ -140,16 +113,32 @@
     </main>
 
     <footer class="text-center pb-8 pt-4">
-        <button onclick="openAdminPanel()" class="text-gray-300 hover:text-gray-500 transition p-2">
+        <button onclick="openAdminPanel()" class="text-gray-300 hover:text-gray-500 transition p-2 cursor-pointer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
         </button>
     </footer>
+
+    <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[150] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-8 text-center relative">
+            <button onclick="closeAdminPanel()" class="absolute top-4 left-4 p-2 text-gray-400">✖</button>
+            <div class="text-3xl mb-4 mt-2">👮‍♂️</div>
+            <h3 class="text-xl font-black text-[#4A435C] mb-4">Admin Login</h3>
+            <div id="admin-login-view">
+                <input type="text" id="admin-ldap-input" class="w-full px-4 py-3 bg-gray-100 rounded-xl mb-4 font-bold text-center border-2 border-transparent focus:border-[#33CCFF] outline-none" placeholder="Admin LDAP">
+                <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0">Unlock Standings</button>
+            </div>
+            <div id="admin-controls-view" class="hidden">
+                <p class="text-green-500 font-bold mb-4">✅ Admin Mode Active</p>
+                <div id="voting-toggle-container" class="mb-4"></div>
+            </div>
+        </div>
+    </div>
 
     <div id="disclosure-modal" class="fixed inset-0 bg-[#4A435C]/80 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-8 text-center">
             <div class="text-4xl mb-4">⚠️</div>
             <h3 class="text-2xl font-black text-[#4A435C] mb-2">Public Access Notice</h3>
-            <p class="text-gray-500 font-medium mb-6">Photos and names are visible to anyone with the link. This is a public gallery.</p>
+            <p class="text-gray-500 font-medium mb-6">Photos and names are visible to anyone with the link.</p>
             <button onclick="closeDisclosure()" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg">I Understand</button>
         </div>
     </div>
@@ -196,7 +185,7 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[110] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl font-bold border-2 border-white/10">
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[200] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl font-bold">
         <span id="toast-icon"></span> <span id="toast-msg"></span>
     </div>
 
@@ -224,8 +213,10 @@
         async function init() {
             await signInAnonymously(auth);
             checkDisclosure();
-            const colRef = collection(db, ...COSTUMES_PATH);
-            onSnapshot(colRef, (snap) => {
+            const savedLdap = localStorage.getItem('voterLdap');
+            if(savedLdap) document.getElementById('voter-ldap').value = savedLdap;
+
+            onSnapshot(collection(db, ...COSTUMES_PATH), (snap) => {
                 costumes = [];
                 snap.forEach(d => d.id === '_config_' ? votingOpen = d.data().isOpen : costumes.push({id: d.id, ...d.data()}));
                 renderGrid(); renderRankings(); updateUI();
@@ -233,86 +224,119 @@
         }
         init();
 
-        window.closeDisclosure = () => { document.getElementById('disclosure-modal').classList.add('hidden'); sessionStorage.setItem('disclosureShown', 'true'); };
-        function checkDisclosure() { if (!sessionStorage.getItem('disclosureShown')) document.getElementById('disclosure-modal').classList.remove('hidden'); }
+        /* ADMIN LOGIC */
+        window.openAdminPanel = () => document.getElementById('admin-modal').classList.remove('hidden');
+        window.closeAdminPanel = () => document.getElementById('admin-modal').classList.add('hidden');
+        window.verifyAdmin = () => {
+            const input = document.getElementById('admin-ldap-input').value.trim().toLowerCase();
+            if(['shirelk', 'frim', 'szilka', 'ronp'].includes(input)) {
+                isAdmin = true;
+                document.getElementById('admin-login-view').classList.add('hidden');
+                document.getElementById('admin-controls-view').classList.remove('hidden');
+                renderRankings();
+                updateUI();
+                showToast("Admin Mode Unlocked", "🔓");
+            } else { showToast("Access Denied", "⛔"); }
+        };
+        window.toggleVoting = async (state) => {
+            await setDoc(doc(db, ...COSTUMES_PATH, '_config_'), { isOpen: state }, { merge: true });
+        };
 
+        /* VOTING LOGIC */
         window.handleVote = async (e) => {
             e.preventDefault();
             const id = document.getElementById('vote-costume-id').value;
             const ldap = document.getElementById('voter-ldap').value.trim().toLowerCase();
+            localStorage.setItem('voterLdap', ldap);
+
             const target = costumes.find(c => c.id === id);
             const category = target.category || 'single';
-            
-            const alreadyVoted = target.voters?.map(v => v.toLowerCase()).includes(ldap);
             const totalInCat = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(ldap)).length;
 
-            if (alreadyVoted) return showToast("Already voted!", "✋");
-            if (totalInCat >= 3) return showToast("Limit 3 votes reached!", "🚫");
+            if (target.voters?.map(v => v.toLowerCase()).includes(ldap)) return showToast("Already voted!", "✋");
+            if (totalInCat >= 3) return showToast("Limit 3 reached!", "🚫");
 
             await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayUnion(ldap) });
             showToast("Vote Counted!", "🗳️");
             closeVoteModal();
         };
 
-        window.handleUpload = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            const ldap = document.getElementById('uploader-ldap').value.trim().toLowerCase();
-            if (costumes.some(c => c.ldap === ldap)) return showToast("Already entered!", "🚫");
-
-            btn.disabled = true; btn.innerHTML = "Uploading...";
-            const img = await compressImage(document.getElementById('file-input').files[0]);
-            await addDoc(collection(db, ...COSTUMES_PATH), {
-                ldap, costumeName: document.getElementById('costume-name').value, image: img,
-                category: document.querySelector('input[name="contestType"]:checked').value, voters: [], createdAt: Date.now()
-            });
-            showToast("Arena Joined!", "🏟️");
-            closeUploadModal();
-            btn.disabled = false; btn.innerHTML = "Join the Battle! 💥";
-        };
-
         function renderGrid() {
             const grid = document.getElementById('costume-grid');
+            const userLdap = localStorage.getItem('voterLdap')?.toLowerCase();
             const filtered = costumes.filter(c => (c.category || 'single') === activeCategory);
-            grid.innerHTML = filtered.length ? filtered.map(c => `
+            
+            grid.innerHTML = filtered.length ? filtered.map(c => {
+                const hasVotedForThis = userLdap && c.voters?.map(v => v.toLowerCase()).includes(userLdap);
+                return `
                 <div class="waze-card overflow-hidden flex flex-col h-full relative">
                     <div class="h-64 overflow-hidden relative">
                         <img src="${c.image}" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-white/95 px-4 py-2 rounded-full font-black text-[#FFC400]">👍 ${c.voters?.length || 0}</div>
+                        ${hasVotedForThis ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1">✅ Voted</div>` : ''}
+                        ${isAdmin ? `<button onclick="deleteEntry('${c.id}')" class="absolute top-4 left-4 bg-white p-2 rounded-full text-red-500 shadow-md">🗑️</button>` : ''}
                     </div>
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="text-xl font-black text-[#4A435C]">${c.costumeName}</h3>
                         <p class="text-xs font-bold text-gray-400 uppercase">@${c.ldap}</p>
                         <div class="mt-auto pt-4">
-                            ${votingOpen ? `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl">Like</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`}
+                            ${votingOpen ? 
+                                (hasVotedForThis ? `<button disabled class="w-full bg-green-50 text-green-500 font-black py-3 rounded-xl border-2 border-green-200">Chosen</button>` : 
+                                `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl">Vote</button>`)
+                                : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`
+                            }
                         </div>
                     </div>
-                </div>`).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold">Waiting for entries...</div>';
+                </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold">Waiting for entries...</div>';
         }
+
+        window.deleteEntry = async (id) => { if(confirm("Delete this entry?")) await deleteDoc(doc(db, ...COSTUMES_PATH, id)); };
 
         function renderRankings() {
             if (!isAdmin) return;
+            document.getElementById('leaderboard-section').classList.remove('hidden');
             const sorted = costumes.filter(c => (c.category || 'single') === activeCategory).sort((a,b)=>(b.voters?.length||0)-(a.voters?.length||0));
             document.getElementById('ranking-list').innerHTML = sorted.map((c, i) => `
                 <tr class="font-bold">
-                    <td class="p-4 text-gray-400">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</td>
+                    <td class="p-4 text-gray-400">#${i+1}</td>
                     <td class="p-4 text-[#4A435C]">${c.ldap}</td>
-                    <td class="hidden md:table-cell p-4 text-gray-500">${c.costumeName}</td>
                     <td class="p-4 text-right text-[#33CCFF] text-lg">${c.voters?.length||0}</td>
                 </tr>`).join('');
         }
 
         function updateUI() {
-            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `Voting is <span class="text-[#33CCFF]">LIVE</span>! Cast your votes.` : `Voting starts at 8:45 PM.`;
+            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `Voting is <span class="text-[#33CCFF]">LIVE</span>!` : `Voting starts at 8:45 PM.`;
+            if(isAdmin) {
+                document.getElementById('voting-toggle-container').innerHTML = `
+                <button onclick="toggleVoting(${!votingOpen})" class="w-full ${votingOpen?'bg-red-500':'bg-green-500'} text-white font-bold py-3 rounded-xl">
+                    ${votingOpen ? 'Stop Voting' : 'Start Voting'}
+                </button>`;
+            }
         }
 
+        /* MODAL HELPERS */
+        window.closeDisclosure = () => { document.getElementById('disclosure-modal').classList.add('hidden'); sessionStorage.setItem('disclosureShown', 'true'); };
+        function checkDisclosure() { if (!sessionStorage.getItem('disclosureShown')) document.getElementById('disclosure-modal').classList.remove('hidden'); }
         window.switchCategory = (cat) => {
             activeCategory = cat;
             document.getElementById('tab-single').className = cat === 'single' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
             document.getElementById('tab-group').className = cat === 'group' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
             renderGrid(); renderRankings();
         };
-
+        window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
+        window.closeUploadModal = () => document.getElementById('upload-modal').classList.add('hidden');
+        window.openVoteModal = (id) => { document.getElementById('vote-costume-id').value = id; document.getElementById('vote-modal').classList.remove('hidden'); };
+        window.closeVoteModal = () => document.getElementById('vote-modal').classList.add('hidden');
+        window.previewImage = (i) => {
+            const r = new FileReader(); r.onload = e => {
+                document.getElementById('image-preview-area').style.display = 'none';
+                const img = document.getElementById('preview-img'); img.src = e.target.result; img.classList.remove('hidden');
+            }; r.readAsDataURL(i.files[0]);
+        };
+        function showToast(m, i) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = m; document.getElementById('toast-icon').textContent = i;
+            t.classList.remove('-translate-y-40'); setTimeout(() => t.classList.add('-translate-y-40'), 3000);
+        }
         async function compressImage(file) {
             return new Promise(res => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
@@ -329,24 +353,18 @@
                 };
             });
         }
-
-        function showToast(m, i) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = m;
-            document.getElementById('toast-icon').textContent = i;
-            t.classList.remove('-translate-y-40');
-            setTimeout(() => t.classList.add('-translate-y-40'), 3000);
-        }
-
-        window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
-        window.closeUploadModal = () => document.getElementById('upload-modal').classList.add('hidden');
-        window.openVoteModal = (id) => { document.getElementById('vote-costume-id').value = id; document.getElementById('vote-modal').classList.remove('hidden'); };
-        window.closeVoteModal = () => document.getElementById('vote-modal').classList.add('hidden');
-        window.previewImage = (i) => {
-            const r = new FileReader(); r.onload = e => {
-                document.getElementById('image-preview-area').style.display = 'none';
-                const img = document.getElementById('preview-img'); img.src = e.target.result; img.classList.remove('hidden');
-            }; r.readAsDataURL(i.files[0]);
+        window.handleUpload = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const ldap = document.getElementById('uploader-ldap').value.trim().toLowerCase();
+            if (costumes.some(c => c.ldap === ldap)) return showToast("Already entered!", "🚫");
+            btn.disabled = true; btn.innerHTML = "Uploading...";
+            const img = await compressImage(document.getElementById('file-input').files[0]);
+            await addDoc(collection(db, ...COSTUMES_PATH), {
+                ldap, costumeName: document.getElementById('costume-name').value, image: img,
+                category: document.querySelector('input[name="contestType"]:checked').value, voters: [], createdAt: Date.now()
+            });
+            showToast("Arena Joined!", "🏟️"); closeUploadModal(); btn.disabled = false;
         };
         window.onclick = (e) => { if (e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
     </script>
