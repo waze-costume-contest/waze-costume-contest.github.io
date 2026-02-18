@@ -62,22 +62,13 @@
             transform: translateY(4px);
         }
 
-        .mood-bg {
-            background: radial-gradient(circle at 30% 30%, var(--waze-cyan), #0091C8);
-        }
-        
         .tab-active {
             background-color: var(--waze-dark);
             color: white;
-            shadow: lg;
         }
         .tab-inactive {
             background-color: transparent;
             color: #9CA3AF;
-        }
-        .tab-inactive:hover {
-            background-color: #f3f4f6;
-            color: var(--waze-dark);
         }
         
         ::-webkit-scrollbar { width: 10px; }
@@ -87,12 +78,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <div class="w-full bg-amber-50 border-b border-amber-100 text-amber-900 text-[11px] md:text-xs font-bold text-center py-1.5 px-4 shadow-sm relative z-50">
-        <span class="mr-1">⚠️</span> 
-        Public Access: Photos & names are visible to anyone with the link. Not an internal tool.
-    </div>
-
-    <header class="sticky top-4 z-40 px-4">
+    <header class="sticky top-4 z-40 px-4 mt-4">
         <div class="container mx-auto max-w-5xl bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 p-3 flex justify-between items-center">
             <div class="flex items-center gap-2 md:gap-4 pl-2 overflow-hidden">
                 <div class="flex items-center gap-2 min-w-0">
@@ -113,7 +99,6 @@
     </header>
 
     <main class="container mx-auto max-w-5xl p-4 flex-grow relative z-10">
-        
         <div class="text-center py-6 md:py-8">
             <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2">Choose Your Side!</h2>
             <p id="voting-status-msg" class="text-gray-500 font-semibold text-lg">Vote for the most epic costumes.</p>
@@ -139,12 +124,9 @@
 
         <section id="leaderboard-section" class="mt-16 mb-20 hidden">
             <div class="flex items-center gap-3 mb-6">
-                <div class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">
-                    🏆
-                </div>
+                <div class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">🏆</div>
                 <h2 class="text-3xl font-bold text-[#4A435C]">Leaderboard <span id="lb-title-suffix" class="text-gray-400 text-lg font-normal ml-2">(Single)</span></h2>
             </div>
-            
             <div class="bg-white rounded-[2rem] shadow-xl border-4 border-white overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -156,8 +138,7 @@
                                 <th class="p-3 pr-4 md:p-4 md:pr-6 text-right font-bold">Votes</th>
                             </tr>
                         </thead>
-                        <tbody id="ranking-list" class="divide-y divide-gray-100">
-                        </tbody>
+                        <tbody id="ranking-list" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -170,8 +151,21 @@
         </button>
     </footer>
 
+    <div id="disclosure-modal" class="fixed inset-0 bg-[#4A435C]/80 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-8 text-center animate-in fade-in zoom-in duration-300">
+            <div class="text-4xl mb-4">⚠️</div>
+            <h3 class="text-2xl font-black text-[#4A435C] mb-2">Public Access Notice</h3>
+            <p class="text-gray-500 font-medium mb-6">
+                Photos and names are visible to <span class="text-[#FF5C5C] font-bold">anyone</span> with the link. This is a public gallery, not an internal tool.
+            </p>
+            <button onclick="closeDisclosure()" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg">
+                I Understand
+            </button>
+        </div>
+    </div>
+
     <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl transform transition-all border-4 border-white relative">
+        <div class="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl border-4 border-white relative">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-2xl font-black text-[#4A435C]">New Entry</h3>
@@ -179,7 +173,6 @@
                         <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
-
                 <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-5">
                     <div>
                         <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-2">Contest Type</label>
@@ -200,7 +193,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div>
                         <div class="border-4 border-dashed border-gray-200 rounded-3xl p-6 text-center cursor-pointer hover:border-[#33CCFF] hover:bg-blue-50 transition group" onclick="document.getElementById('file-input').click()">
                             <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
@@ -213,21 +205,11 @@
                             <img id="preview-img" class="hidden w-full h-40 object-cover rounded-2xl shadow-sm">
                         </div>
                     </div>
-                    
                     <div class="space-y-4">
-                        <div>
-                            <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-1">Your LDAP</label>
-                            <input type="text" id="uploader-ldap" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="e.g. jdoe" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-1">Costume Name</label>
-                            <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="e.g. The Dark Wazer" required>
-                        </div>
+                        <input type="text" id="uploader-ldap" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="Your LDAP (e.g. jdoe)" required>
+                        <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#33CCFF] focus:bg-white font-bold text-[#4A435C]" placeholder="Costume Name" required>
                     </div>
-
-                    <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg mt-2">
-                        Join the Battle! 💥
-                    </button>
+                    <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg">Join the Battle! 💥</button>
                 </form>
             </div>
         </div>
@@ -235,18 +217,16 @@
 
     <div id="vote-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden">
-            <div class="bg-[#FFC400] p-6 text-center">
-                <div class="bg-white/20 w-16 h-16 rounded-full mx-auto flex items-center justify-center text-3xl mb-2 backdrop-blur-sm">👍</div>
-                <h3 class="text-2xl font-black text-white">Awesome!</h3>
+            <div class="bg-[#FFC400] p-6 text-center text-white">
+                <div class="bg-white/20 w-16 h-16 rounded-full mx-auto flex items-center justify-center text-3xl mb-2">👍</div>
+                <h3 class="text-2xl font-black">Awesome!</h3>
             </div>
             <form id="vote-form" onsubmit="handleVote(event)" class="p-6 space-y-4">
                 <input type="hidden" id="vote-costume-id">
-                <p class="text-gray-500 font-medium text-center text-sm">Verify your LDAP to count this vote. <br><b>Limit: 3 votes per category.</b></p>
-                
-                <input type="text" id="voter-ldap" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#FFC400] focus:bg-white font-bold text-center text-[#4A435C]" placeholder="Your LDAP" required>
-                
+                <p class="text-gray-500 font-medium text-center text-sm">Verify your LDAP to vote. <br><b>Limit: 3 votes per category.</b></p>
+                <input type="text" id="voter-ldap" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#FFC400] font-bold text-center" placeholder="Your LDAP" required>
                 <div class="grid grid-cols-2 gap-3">
-                    <button type="button" onclick="closeVoteModal()" class="py-3 px-4 rounded-xl font-bold text-gray-400 hover:bg-gray-100 transition">Cancel</button>
+                    <button type="button" onclick="closeVoteModal()" class="py-3 px-4 rounded-xl font-bold text-gray-400">Cancel</button>
                     <button type="submit" class="btn-waze-action rounded-xl font-black py-3 px-4 shadow-md">Confirm</button>
                 </div>
             </form>
@@ -255,26 +235,24 @@
 
     <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-6 text-center relative">
-            <button onclick="closeAdminPanel()" class="absolute top-4 left-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition">
+            <button onclick="closeAdminPanel()" class="absolute top-4 left-4 p-2 text-gray-400">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div class="text-3xl mb-4 mt-2">👮‍♂️</div>
             <h3 class="text-xl font-black text-[#4A435C] mb-4">Admin Control</h3>
             <div id="admin-login-view">
                 <input type="text" id="admin-ldap" class="w-full px-4 py-3 bg-gray-100 rounded-xl mb-4 text-center font-bold" placeholder="Enter Admin LDAP">
-                <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 transition-all">Unlock</button>
+                <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl">Unlock</button>
             </div>
             <div id="admin-controls-view" class="hidden">
                 <p class="text-green-500 font-bold mb-4">✅ Admin Mode Active</p>
                 <div id="voting-toggle-btn-container" class="mb-4"></div>
-                <hr class="border-gray-100 my-4">
-                <p class="text-xs text-gray-400">Close this panel to delete costumes from the main grid.</p>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[100] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10 w-auto min-w-[300px] justify-center">
-        <span id="toast-icon" class="text-2xl">✅</span>
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[110] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10">
+        <span id="toast-icon">✅</span>
         <span id="toast-msg">Notification</span>
     </div>
 
@@ -283,7 +261,6 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, getDoc, setDoc, deleteDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // --- CONFIG ---
         const ADMIN_USERS = ['shirelk', 'frim', 'szilka', 'ronp']; 
         const firebaseConfig = {
             apiKey: "AIzaSyCfx3wajLL12k12Yq43rvcqedRRjnKK92Y",
@@ -294,13 +271,11 @@
             appId: "1:1057125475439:web:2e1042532a0bbd572f199a",
             measurementId: "G-RZX6ZTPFNB"
         };
-        // --------------
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const appId = 'waze-costumes-default';
-        const COSTUMES_COLLECTION_PATH = ['artifacts', appId, 'public', 'data', 'contest_entries'];
+        const COSTUMES_COLLECTION_PATH = ['artifacts', 'waze-costumes-default', 'public', 'data', 'contest_entries'];
         const CONFIG_DOC_ID = '_config_'; 
 
         let costumes = [];
@@ -312,12 +287,25 @@
             try {
                 await signInAnonymously(auth);
                 setupRealtimeListener();
+                checkDisclosure(); // Trigger the popup check
             } catch (error) {
                 console.error("Auth failed", error);
                 showToast("Error connecting", "❌");
             }
         }
         init();
+
+        // DISCLOSURE LOGIC
+        window.closeDisclosure = () => {
+            document.getElementById('disclosure-modal').classList.add('hidden');
+            sessionStorage.setItem('disclosureShown', 'true');
+        };
+
+        function checkDisclosure() {
+            if (!sessionStorage.getItem('disclosureShown')) {
+                document.getElementById('disclosure-modal').classList.remove('hidden');
+            }
+        }
 
         function setupRealtimeListener() {
             const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
@@ -338,180 +326,89 @@
 
         window.handleVote = async (e) => {
             e.preventDefault();
+            if (!votingOpen) return showToast("Voting locked!", "🔒");
             
-            if (!votingOpen) {
-                showToast("Voting is currently locked!", "🔒");
-                closeVoteModal();
-                return;
-            }
-
             const costumeId = document.getElementById('vote-costume-id').value;
             const voterLdap = document.getElementById('voter-ldap').value.trim().toLowerCase();
+            const target = costumes.find(c => c.id === costumeId);
+            const category = target.category || 'single';
 
-            if (!voterLdap) return;
-
-            const targetCostume = costumes.find(c => c.id === costumeId);
-            if (!targetCostume) return;
-            
-            const category = targetCostume.category || 'single';
-
-            if (targetCostume.voters && targetCostume.voters.map(v => v.toLowerCase()).includes(voterLdap)) {
-                showToast("Already voted for this one!", "✋");
-                closeVoteModal();
-                return;
+            if (target.voters?.map(v => v.toLowerCase()).includes(voterLdap)) {
+                return showToast("Already voted here!", "✋");
             }
 
-            const votesInCategory = costumes.filter(c => {
-                const cat = c.category || 'single';
-                return cat === category && c.voters && c.voters.map(v => v.toLowerCase()).includes(voterLdap);
-            });
-
-            if (votesInCategory.length >= 3) {
-                showToast(`A maximum of 3 votes was reached for ${category} category!`, "🚫");
-                closeVoteModal();
-                return;
-            }
+            const catVotes = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(voterLdap));
+            if (catVotes.length >= 3) return showToast(`Limit: 3 votes for ${category}!`, "🚫");
 
             try {
                 const docRef = doc(db, ...COSTUMES_COLLECTION_PATH, costumeId);
-                const freshDoc = await getDoc(docRef);
-                
-                if (freshDoc.exists()) {
-                    const data = freshDoc.data();
-                    const currentVoters = data.voters || [];
-                    
-                    if (currentVoters.map(v => v.toLowerCase()).includes(voterLdap)) {
-                        showToast("Already voted!", "✋");
-                    } else {
-                        await updateDoc(docRef, { voters: arrayUnion(voterLdap) });
-                        showToast(`Vote Counted! (${votesInCategory.length + 1}/3)`, "🗳️");
-                    }
-                }
+                await updateDoc(docRef, { voters: arrayUnion(voterLdap) });
+                showToast(`Vote Counted! (${catVotes.length + 1}/3)`, "🗳️");
                 closeVoteModal();
-            } catch (error) {
-                console.error("Vote error", error);
-                showToast("Vote failed.", "❌");
-            }
+            } catch (e) { showToast("Vote failed", "❌"); }
         };
 
         window.handleUpload = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
-            const fileInput = document.getElementById('file-input');
+            const file = document.getElementById('file-input').files[0];
             const ldap = document.getElementById('uploader-ldap').value.trim().toLowerCase();
             const name = document.getElementById('costume-name').value.trim();
-            const contestType = document.querySelector('input[name="contestType"]:checked').value;
+            const type = document.querySelector('input[name="contestType"]:checked').value;
 
-            const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
-            const q = query(colRef, where("ldap", "==", ldap));
-            const existing = await getDocs(q);
-        
-            if (!existing.empty) {
-                showToast("You have already entered a costume!", "🚫");
-                return;
-            }
+            if (costumes.some(c => c.ldap === ldap)) return showToast("Already entered!", "🚫");
 
-            if (!fileInput.files[0]) {
-                showToast("Photo needed!", "📸");
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = `Uploading...`;
-
+            btn.disabled = true; btn.innerHTML = "Uploading...";
             try {
-                const base64Image = await compressImage(fileInput.files[0]);
-                await addDoc(colRef, {
-                    ldap: ldap,
-                    costumeName: name,
-                    image: base64Image,
-                    category: contestType,
-                    voters: [],
-                    createdAt: Date.now()
+                const img = await compressImage(file);
+                await addDoc(collection(db, ...COSTUMES_COLLECTION_PATH), {
+                    ldap, costumeName: name, image: img, category: type, voters: [], createdAt: Date.now()
                 });
-
-                showToast("You entered the arena", "🏟️");
+                showToast("Arena Joined!", "🏟️");
                 closeUploadModal();
                 e.target.reset();
-                document.getElementById('image-preview-area').style.display = 'block';
-                document.getElementById('preview-img').classList.add('hidden');
-            } catch (error) {
-                console.error("Upload error", error);
-                showToast("Upload failed.", "❌");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `Join the Battle! 💥`;
-            }
+            } catch (e) { showToast("Upload failed", "❌"); }
+            finally { btn.disabled = false; btn.innerHTML = "Join the Battle! 💥"; }
         };
 
         function renderGrid() {
             const grid = document.getElementById('costume-grid');
             const filtered = costumes.filter(c => (c.category || 'single') === activeCategory);
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-400"><p class="text-xl font-bold">No entries yet!</p></div>`;
-                return;
-            }
-
-            grid.innerHTML = filtered.sort((a, b) => b.createdAt - a.createdAt).map(c => {
-                const voteCount = c.voters ? c.voters.length : 0;
-                let btnHtml = votingOpen ? 
-                    `<button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#33CCFF] text-white font-black py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0">Like</button>` :
-                    `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl cursor-not-allowed">🔒 Locked</button>`;
-
-                return `
-                    <div class="waze-card overflow-hidden flex flex-col h-full relative">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="${c.image}" class="w-full h-full object-cover">
-                            ${isAdminAuthenticated ? `<button onclick="deleteCostume('${c.id}')" class="absolute top-4 left-4 bg-white p-2 rounded-full text-red-500 shadow-lg">🗑️</button>` : ''}
-                            <div class="absolute top-4 right-4 bg-white/95 px-4 py-2 rounded-full font-black text-[#FFC400] shadow-lg border-2 border-white">👍 ${voteCount}</div>
+            grid.innerHTML = filtered.length ? filtered.sort((a,b)=>b.createdAt-a.createdAt).map(c => `
+                <div class="waze-card overflow-hidden flex flex-col h-full relative">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${c.image}" class="w-full h-full object-cover">
+                        ${isAdminAuthenticated ? `<button onclick="deleteCostume('${c.id}')" class="absolute top-4 left-4 bg-white p-2 rounded-full text-red-500 shadow-lg">🗑️</button>` : ''}
+                        <div class="absolute top-4 right-4 bg-white/95 px-4 py-2 rounded-full font-black text-[#FFC400] shadow-lg">👍 ${c.voters?.length || 0}</div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="text-xl font-black text-[#4A435C]">${escapeHtml(c.costumeName)}</h3>
+                        <p class="text-xs font-bold text-gray-400 uppercase">@${escapeHtml(c.ldap)}</p>
+                        <div class="mt-auto pt-4">
+                            ${votingOpen ? `<button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#33CCFF] text-white font-black py-3 rounded-xl border-b-4 border-[#0091C8] active:border-b-0">Like</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`}
                         </div>
-                        <div class="p-5 flex flex-col flex-grow">
-                            <h3 class="text-xl font-black text-[#4A435C] leading-tight">${escapeHtml(c.costumeName)}</h3>
-                            <p class="text-xs font-bold text-gray-400 uppercase">@${escapeHtml(c.ldap)}</p>
-                            <div class="mt-auto pt-4">${btnHtml}</div>
-                        </div>
-                    </div>`;
-            }).join('');
+                    </div>
+                </div>`).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold">No entries yet!</div>';
         }
 
-        // Updated renderRankings to handle the visibility toggle
         function renderRankings() {
             const section = document.getElementById('leaderboard-section');
-            
-            // Hide section if not admin
-            if (!isAdminAuthenticated) {
-                section.classList.add('hidden');
-                return;
-            }
-            
-            // Show section if admin
+            if (!isAdminAuthenticated) return section.classList.add('hidden');
             section.classList.remove('hidden');
-
-            const list = document.getElementById('ranking-list');
-            const sorted = costumes.filter(c => (c.category || 'single') === activeCategory)
-                                   .sort((a, b) => (b.voters?.length || 0) - (a.voters?.length || 0));
-
-            if (sorted.length === 0) {
-                list.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400 font-bold">No entries yet.</td></tr>`;
-                return;
-            }
-
-            list.innerHTML = sorted.map((c, i) => `
+            const sorted = costumes.filter(c => (c.category || 'single') === activeCategory).sort((a,b)=>(b.voters?.length||0)-(a.voters?.length||0));
+            document.getElementById('ranking-list').innerHTML = sorted.map((c, i) => `
                 <tr class="hover:bg-blue-50/50">
-                    <td class="p-4 font-bold text-gray-400">${i < 3 ? ['🥇','🥈','🥉'][i] : '#' + (i+1)}</td>
+                    <td class="p-4 font-bold text-gray-400">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</td>
                     <td class="p-4 font-bold text-[#4A435C]">${escapeHtml(c.ldap)}</td>
                     <td class="hidden md:table-cell p-4 text-gray-500">${escapeHtml(c.costumeName)}</td>
-                    <td class="p-4 text-right font-black text-[#33CCFF] text-lg">${c.voters?.length || 0}</td>
+                    <td class="p-4 text-right font-black text-[#33CCFF] text-lg">${c.voters?.length||0}</td>
                 </tr>`).join('');
         }
 
         function updateVotingStatusUI() {
-            const statusMsg = document.getElementById('voting-status-msg');
-            const toggleContainer = document.getElementById('voting-toggle-btn-container');
-            statusMsg.innerHTML = votingOpen ? `Vote for the most epic <span class="text-[#33CCFF]">Hero</span> or <span class="text-[#FF5C5C]">Villain</span>.` : `<span class="bg-gray-200 text-gray-500 px-3 py-1 rounded-lg text-sm">🔒 Voting is currently locked</span>`;
+            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `Vote for the most epic <span class="text-[#33CCFF]">Hero</span> or <span class="text-[#FF5C5C]">Villain</span>.` : `<span class="bg-gray-200 text-gray-500 px-3 py-1 rounded-lg text-sm">🔒 Voting is currently locked</span>`;
             if (isAdminAuthenticated) {
-                toggleContainer.innerHTML = `<button onclick="toggleVoting(${!votingOpen})" class="w-full ${votingOpen ? 'bg-red-500' : 'bg-green-500'} text-white font-bold py-3 rounded-xl shadow-lg">${votingOpen ? '🔴 Stop Voting' : '🟢 Start Voting'}</button>`;
+                document.getElementById('voting-toggle-btn-container').innerHTML = `<button onclick="toggleVoting(${!votingOpen})" class="w-full ${votingOpen?'bg-red-500':'bg-green-500'} text-white font-bold py-3 rounded-xl shadow-lg">${votingOpen?'🔴 Stop Voting':'🟢 Start Voting'}</button>`;
             }
         }
 
@@ -519,54 +416,34 @@
             activeCategory = cat;
             document.getElementById('tab-single').className = cat === 'single' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
             document.getElementById('tab-group').className = cat === 'group' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
-            document.getElementById('lb-title-suffix').textContent = cat === 'single' ? '(Single)' : '(Group)';
-            renderGrid();
-            renderRankings();
+            document.getElementById('lb-title-suffix').textContent = `(${cat.charAt(0).toUpperCase() + cat.slice(1)})`;
+            renderGrid(); renderRankings();
         };
 
-        window.toggleVoting = async (newState) => {
-            await setDoc(doc(db, ...COSTUMES_COLLECTION_PATH, CONFIG_DOC_ID), { isOpen: newState }, { merge: true });
-            showToast(newState ? "Voting Enabled!" : "Voting Disabled!", newState ? "🟢" : "🔴");
-        };
-
+        window.toggleVoting = async (s) => { await setDoc(doc(db, ...COSTUMES_COLLECTION_PATH, CONFIG_DOC_ID), { isOpen: s }, { merge: true }); };
         window.verifyAdmin = () => {
-            const input = document.getElementById('admin-ldap').value.trim().toLowerCase();
-            if (ADMIN_USERS.includes(input)) {
+            if (ADMIN_USERS.includes(document.getElementById('admin-ldap').value.trim().toLowerCase())) {
                 isAdminAuthenticated = true;
                 document.getElementById('admin-login-view').classList.add('hidden');
                 document.getElementById('admin-controls-view').classList.remove('hidden');
-                renderGrid();
-                renderRankings(); // Now triggers the visibility change
-                updateVotingStatusUI();
-                showToast("Admin Unlocked", "🔓");
-            } else {
-                showToast("Access Denied", "⛔");
-            }
+                renderGrid(); renderRankings(); updateVotingStatusUI();
+            } else showToast("Access Denied", "⛔");
         };
 
-        window.deleteCostume = async (id) => {
-            if(confirm("Delete this entry?")) {
-                await deleteDoc(doc(db, ...COSTUMES_COLLECTION_PATH, id));
-                showToast("Deleted", "🗑️");
-            }
-        };
+        window.deleteCostume = async (id) => { if(confirm("Delete?")) await deleteDoc(doc(db, ...COSTUMES_COLLECTION_PATH, id)); };
 
         async function compressImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.src = e.target.result;
+            return new Promise(res => {
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = e => {
+                    const img = new Image(); img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_SIZE = 800;
-                        let w = img.width, h = img.height;
-                        if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } }
-                        else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } }
+                        const MAX = 800; let w = img.width, h = img.height;
+                        if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } } else { if (h > MAX) { w *= MAX/h; h = MAX; } }
                         canvas.width = w; canvas.height = h;
                         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                        res(canvas.toDataURL('image/jpeg', 0.7));
                     };
                 };
             });
@@ -583,30 +460,17 @@
 
         window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
         window.closeUploadModal = () => document.getElementById('upload-modal').classList.add('hidden');
-        window.openVoteModal = (id) => {
-            if (!votingOpen) return showToast("Locked!", "🔒");
-            document.getElementById('vote-costume-id').value = id;
-            document.getElementById('vote-modal').classList.remove('hidden');
-        };
+        window.openVoteModal = (id) => { document.getElementById('vote-costume-id').value = id; document.getElementById('vote-modal').classList.remove('hidden'); };
         window.closeVoteModal = () => document.getElementById('vote-modal').classList.add('hidden');
         window.openAdminPanel = () => document.getElementById('admin-modal').classList.remove('hidden');
         window.closeAdminPanel = () => document.getElementById('admin-modal').classList.add('hidden');
-        window.previewImage = (input) => {
-            if (input.files?.[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('image-preview-area').style.display = 'none';
-                    const img = document.getElementById('preview-img');
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+        window.previewImage = (i) => {
+            const r = new FileReader(); r.onload = e => {
+                document.getElementById('image-preview-area').style.display = 'none';
+                const img = document.getElementById('preview-img'); img.src = e.target.result; img.classList.remove('hidden');
+            }; r.readAsDataURL(i.files[0]);
         };
-
-        window.onclick = (e) => {
-            if (e.target.id.endsWith('modal')) e.target.classList.add('hidden');
-        };
+        window.onclick = (e) => { if (e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
     </script>
 </body>
 </html>
