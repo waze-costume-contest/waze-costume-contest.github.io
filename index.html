@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Official-ish Waze Palette */
             --waze-cyan: #33CCFF;
             --waze-blue-dark: #0091C8;
             --waze-green: #93E223;
@@ -25,12 +24,10 @@
             font-family: 'Nunito', sans-serif;
             background-color: var(--waze-offwhite);
             color: var(--waze-dark);
-            /* Clean subtle gradient background */
             background-image: linear-gradient(to bottom, #ffffff, #eef2f6);
             background-attachment: fixed;
         }
 
-        /* Waze Card Style - Puffy and soft */
         .waze-card {
             background: white;
             border-radius: 1.5rem;
@@ -44,7 +41,6 @@
             box-shadow: 0 8px 0 #e5e7eb, 0 12px 24px rgba(0,0,0,0.1);
         }
 
-        /* The iconic Report Button style */
         .btn-waze-action {
             background-color: var(--waze-yellow);
             color: white;
@@ -66,12 +62,10 @@
             transform: translateY(4px);
         }
 
-        /* Mood Bubble (Avatar placeholder) */
         .mood-bg {
             background: radial-gradient(circle at 30% 30%, var(--waze-cyan), #0091C8);
         }
         
-        /* Tab Styles */
         .tab-active {
             background-color: var(--waze-dark);
             color: white;
@@ -86,7 +80,6 @@
             color: var(--waze-dark);
         }
         
-        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; border: 3px solid var(--waze-offwhite); }
@@ -177,11 +170,7 @@
         </button>
     </footer>
 
-    <button onclick="openUploadModal()" class="md:hidden fixed bottom-6 right-6 w-16 h-16 bg-[#FFC400] rounded-full shadow-2xl flex items-center justify-center text-white border-b-4 border-[#FF8F00] active:border-b-0 active:translate-y-1 z-40">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
-    </button>
-
-    <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+    <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl transform transition-all border-4 border-white relative">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
@@ -192,7 +181,6 @@
                 </div>
 
                 <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-5">
-                    
                     <div>
                         <label class="block text-gray-500 text-xs font-bold uppercase ml-3 mb-2">Contest Type</label>
                         <div class="grid grid-cols-2 gap-3">
@@ -253,7 +241,7 @@
             </div>
             <form id="vote-form" onsubmit="handleVote(event)" class="p-6 space-y-4">
                 <input type="hidden" id="vote-costume-id">
-                <p class="text-gray-500 font-medium text-center text-sm">Verify your LDAP to count this vote.</p>
+                <p class="text-gray-500 font-medium text-center text-sm">Verify your LDAP to count this vote. <br><b>Limit: 3 votes per category.</b></p>
                 
                 <input type="text" id="voter-ldap" class="w-full px-5 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl focus:outline-none focus:border-[#FFC400] focus:bg-white font-bold text-center text-[#4A435C]" placeholder="Your LDAP" required>
                 
@@ -267,29 +255,22 @@
 
     <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl border-4 border-white overflow-hidden p-6 text-center relative">
-            
             <button onclick="closeAdminPanel()" class="absolute top-4 left-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-
             <div class="text-3xl mb-4 mt-2">👮‍♂️</div>
             <h3 class="text-xl font-black text-[#4A435C] mb-4">Admin Control</h3>
-            
             <div id="admin-login-view">
                 <input type="text" id="admin-ldap" class="w-full px-4 py-3 bg-gray-100 rounded-xl mb-4 text-center font-bold" placeholder="Enter Admin LDAP">
                 <button onclick="verifyAdmin()" class="w-full bg-[#33CCFF] text-white font-bold py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 transition-all">Unlock</button>
             </div>
-
             <div id="admin-controls-view" class="hidden">
                 <p class="text-green-500 font-bold mb-4">✅ Admin Mode Active</p>
-                <p class="text-sm text-gray-500 mb-4">Voting Toggle:</p>
-                <div id="voting-toggle-btn-container" class="mb-4">
-                    </div>
+                <div id="voting-toggle-btn-container" class="mb-4"></div>
                 <hr class="border-gray-100 my-4">
                 <p class="text-xs text-gray-400">Close this panel to delete costumes from the main grid.</p>
             </div>
-            
-            </div>
+        </div>
     </div>
 
     <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[100] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-bold border-2 border-white/10 w-auto min-w-[300px] justify-center">
@@ -300,13 +281,10 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, getDoc, setDoc, deleteDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // --- CONFIGURATION ---
-        // 🔒 ADD ADMIN LDAPS HERE (lowercase)
-        const ADMIN_USERS = ['shirelk', 'frim', 'szilka']; 
-        // ---------------------
-
+        // --- CONFIG ---
+        const ADMIN_USERS = ['shirelk', 'frim', 'szilka', 'ronp']; 
         const firebaseConfig = {
             apiKey: "AIzaSyCfx3wajLL12k12Yq43rvcqedRRjnKK92Y",
             authDomain: "waze-costume-party.firebaseapp.com",
@@ -316,26 +294,23 @@
             appId: "1:1057125475439:web:2e1042532a0bbd572f199a",
             measurementId: "G-RZX6ZTPFNB"
         };
+        // --------------
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'waze-costumes-default';
+        const appId = 'waze-costumes-default';
         const COSTUMES_COLLECTION_PATH = ['artifacts', appId, 'public', 'data', 'contest_entries'];
         const CONFIG_DOC_ID = '_config_'; 
 
         let costumes = [];
         let votingOpen = false;
         let activeCategory = 'single'; 
-        let isAdminAuthenticated = false; // NEW: Track admin state
+        let isAdminAuthenticated = false;
 
         async function init() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
                 setupRealtimeListener();
             } catch (error) {
                 console.error("Auth failed", error);
@@ -343,92 +318,6 @@
             }
         }
         init();
-
-        function updateVotingStatusUI() {
-            const statusMsg = document.getElementById('voting-status-msg');
-            const toggleContainer = document.getElementById('voting-toggle-btn-container');
-
-            if (votingOpen) {
-                statusMsg.innerHTML = `Vote for the most epic <span class="text-[#33CCFF]">Hero</span> or <span class="text-[#FF5C5C]">Villain</span>.`;
-                toggleContainer.innerHTML = `<button onclick="toggleVoting(false)" class="w-full bg-[#FF5C5C] hover:bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg border-b-4 border-red-700 active:border-b-0 active:translate-y-1">🔴 Stop Voting</button>`;
-            } else {
-                statusMsg.innerHTML = `<span class="bg-gray-200 text-gray-500 px-3 py-1 rounded-lg text-sm">🔒 Voting is currently locked</span>`;
-                toggleContainer.innerHTML = `<button onclick="toggleVoting(true)" class="w-full bg-[#93E223] hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg border-b-4 border-green-700 active:border-b-0 active:translate-y-1">🟢 Start Voting</button>`;
-            }
-            renderGrid();
-        }
-
-        window.toggleVoting = async (newState) => {
-            try {
-                const configRef = doc(db, ...COSTUMES_COLLECTION_PATH, CONFIG_DOC_ID);
-                await setDoc(configRef, { isOpen: newState }, { merge: true });
-                showToast(newState ? "Voting Enabled!" : "Voting Disabled!", newState ? "🟢" : "🔴");
-            } catch (e) {
-                console.error(e);
-                showToast("Error toggling", "❌");
-            }
-        }
-
-        window.openAdminPanel = () => {
-            document.getElementById('admin-modal').classList.remove('hidden');
-            if (!isAdminAuthenticated) {
-                document.getElementById('admin-login-view').classList.remove('hidden');
-                document.getElementById('admin-controls-view').classList.add('hidden');
-            } else {
-                document.getElementById('admin-login-view').classList.add('hidden');
-                document.getElementById('admin-controls-view').classList.remove('hidden');
-            }
-        };
-
-        window.closeAdminPanel = () => document.getElementById('admin-modal').classList.add('hidden');
-
-        window.verifyAdmin = () => {
-            const input = document.getElementById('admin-ldap').value.trim().toLowerCase();
-            if (ADMIN_USERS.includes(input)) {
-                isAdminAuthenticated = true; // Set authenticated
-                document.getElementById('admin-login-view').classList.add('hidden');
-                document.getElementById('admin-controls-view').classList.remove('hidden');
-                renderGrid(); // Re-render grid to show delete buttons
-                showToast("Admin Unlocked", "🔓");
-            } else {
-                showToast("Access Denied", "⛔");
-            }
-        };
-
-        // NEW: Delete Costume Function
-        window.deleteCostume = async (id) => {
-            if(!confirm("Are you sure you want to delete this costume? This cannot be undone.")) return;
-            
-            try {
-                const docRef = doc(db, ...COSTUMES_COLLECTION_PATH, id);
-                await deleteDoc(docRef);
-                showToast("Deleted", "🗑️");
-            } catch (e) {
-                console.error(e);
-                showToast("Delete failed", "❌");
-            }
-        }
-
-        window.switchCategory = (cat) => {
-            activeCategory = cat;
-            
-            const tabSingle = document.getElementById('tab-single');
-            const tabGroup = document.getElementById('tab-group');
-            const lbSuffix = document.getElementById('lb-title-suffix');
-            
-            if (cat === 'single') {
-                tabSingle.className = "tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
-                tabGroup.className = "tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
-                lbSuffix.textContent = "(Single)";
-            } else {
-                tabSingle.className = "tab-inactive px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
-                tabGroup.className = "tab-active px-6 py-2 rounded-full font-bold text-sm md:text-base transition-all duration-300 flex items-center gap-2";
-                lbSuffix.textContent = "(Group)";
-            }
-
-            renderGrid();
-            renderRankings();
-        }
 
         function setupRealtimeListener() {
             const colRef = collection(db, ...COSTUMES_COLLECTION_PATH);
@@ -447,129 +336,65 @@
             });
         }
 
-        function getFilteredCostumes() {
-            return costumes.filter(c => {
+        window.handleVote = async (e) => {
+            e.preventDefault();
+            
+            if (!votingOpen) {
+                showToast("Voting is currently locked!", "🔒");
+                closeVoteModal();
+                return;
+            }
+
+            const costumeId = document.getElementById('vote-costume-id').value;
+            const voterLdap = document.getElementById('voter-ldap').value.trim().toLowerCase();
+
+            if (!voterLdap) return;
+
+            const targetCostume = costumes.find(c => c.id === costumeId);
+            if (!targetCostume) return;
+            
+            const category = targetCostume.category || 'single';
+
+            // Check if already voted for this specific costume
+            if (targetCostume.voters && targetCostume.voters.map(v => v.toLowerCase()).includes(voterLdap)) {
+                showToast("Already voted for this one!", "✋");
+                closeVoteModal();
+                return;
+            }
+
+            // CHECK LIMIT: Max 3 votes per category
+            const votesInCategory = costumes.filter(c => {
                 const cat = c.category || 'single';
-                return cat === activeCategory;
+                return cat === category && c.voters && c.voters.map(v => v.toLowerCase()).includes(voterLdap);
             });
-        }
 
-        function renderGrid() {
-            const grid = document.getElementById('costume-grid');
-            const filtered = getFilteredCostumes();
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-400">
-                        <span class="text-6xl mb-4 opacity-50 animate-pulse">💥</span>
-                        <p class="text-xl font-bold">No ${activeCategory} costumes yet!</p>
-                        <p class="text-sm">Be the first to deploy.</p>
-                    </div>`;
+            if (votesInCategory.length >= 3) {
+                showToast(`Max 3 votes reached for ${category}!`, "🚫");
+                closeVoteModal();
                 return;
             }
 
-            const sortedCostumes = [...filtered].sort((a, b) => b.createdAt - a.createdAt);
-
-            grid.innerHTML = sortedCostumes.map(c => {
-                const voteCount = c.voters ? c.voters.length : 0;
+            try {
+                const docRef = doc(db, ...COSTUMES_COLLECTION_PATH, costumeId);
+                const freshDoc = await getDoc(docRef);
                 
-                // Admin Delete Button
-                let adminControls = '';
-                if (isAdminAuthenticated) {
-                    adminControls = `
-                        <button onclick="deleteCostume('${c.id}')" class="absolute top-4 left-4 bg-white/90 backdrop-blur text-red-500 w-10 h-10 rounded-full shadow-lg z-20 hover:bg-red-50 hover:text-red-600 transition flex items-center justify-center border-2 border-white">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                    `;
+                if (freshDoc.exists()) {
+                    const data = freshDoc.data();
+                    const currentVoters = data.voters || [];
+                    
+                    if (currentVoters.map(v => v.toLowerCase()).includes(voterLdap)) {
+                        showToast("Already voted!", "✋");
+                    } else {
+                        await updateDoc(docRef, { voters: arrayUnion(voterLdap) });
+                        showToast(`Vote Counted! (${votesInCategory.length + 1}/3)`, "🗳️");
+                    }
                 }
-
-                let buttonHtml;
-                if (votingOpen) {
-                    buttonHtml = `
-                        <button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#33CCFF] hover:bg-[#2ebbe6] text-[#e2eaf5] font-black py-3 px-4 rounded-xl shadow-md transition-colors duration-200 border-b-4 border-[#0091C8] active:border-b-0 flex items-center justify-center gap-2 bg-[#33CCFF]">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
-                            Like
-                        </button>
-                    `;
-                } else {
-                    buttonHtml = `
-                        <button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 cursor-not-allowed border-2 border-transparent">
-                            <span>🔒</span> Voting Locked
-                        </button>
-                    `;
-                }
-
-                return `
-                    <div class="waze-card group flex flex-col h-full overflow-hidden relative">
-                        <div class="relative h-64 overflow-hidden bg-gray-100 rounded-t-[1.3rem]">
-                            <img src="${c.image}" alt="${c.costumeName}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                            
-                            ${adminControls}
-
-                            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full text-xl font-black text-[#FFC400] shadow-lg border-2 border-white flex items-center gap-2 z-10">
-                                <span class="text-2xl">👍</span> ${voteCount}
-                            </div>
-                        </div>
-                        <div class="p-5 flex flex-col flex-grow">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <h3 class="text-xl font-black text-[#4A435C] leading-tight mb-1">${escapeHtml(c.costumeName)}</h3>
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">@${escapeHtml(c.ldap)}</p>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto pt-4">
-                                ${buttonHtml}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderRankings() {
-            const list = document.getElementById('ranking-list');
-            const filtered = getFilteredCostumes();
-            const sorted = [...filtered].sort((a, b) => {
-                const votesA = a.voters ? a.voters.length : 0;
-                const votesB = b.voters ? b.voters.length : 0;
-                return votesB - votesA;
-            });
-
-            if (sorted.length === 0) {
-                list.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400 font-bold">No entries in this category yet.</td></tr>`;
-                return;
+                closeVoteModal();
+            } catch (error) {
+                console.error("Vote error", error);
+                showToast("Vote failed.", "❌");
             }
-
-            list.innerHTML = sorted.map((c, index) => {
-                const votes = c.voters ? c.voters.length : 0;
-                let rankStyle = "text-gray-400 font-bold";
-                let rankIcon = `#${index + 1}`;
-                
-                if (index === 0) { rankIcon = "🥇"; rankStyle = "text-xl md:text-2xl"; }
-                if (index === 1) { rankIcon = "🥈"; rankStyle = "text-lg md:text-xl"; }
-                if (index === 2) { rankIcon = "🥉"; rankStyle = "text-lg md:text-xl"; }
-
-                return `
-                    <tr class="hover:bg-blue-50/50 transition duration-150">
-                        <td class="p-3 pl-4 md:p-4 md:pl-6 align-middle ${rankStyle}">${rankIcon}</td>
-                        <td class="p-3 md:p-4 align-middle">
-                            <div class="flex items-center gap-2 md:gap-3">
-                                <div class="w-8 h-8 rounded-full mood-bg flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                                    ${c.ldap.charAt(0).toUpperCase()}
-                                </div>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-[#4A435C] truncate text-sm md:text-base">${escapeHtml(c.ldap)}</span>
-                                    <span class="md:hidden text-xs text-gray-400 font-semibold truncate max-w-[120px]">${escapeHtml(c.costumeName)}</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="hidden md:table-cell p-4 text-sm font-semibold text-gray-500">${escapeHtml(c.costumeName)}</td>
-                        <td class="p-3 pr-4 md:p-4 md:pr-6 text-right font-black text-[#33CCFF] text-lg">${votes}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
+        };
 
         window.handleUpload = async (e) => {
             e.preventDefault();
@@ -593,10 +418,8 @@
                 return;
             }
 
-            const originalBtnText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = `Uploading...`;
-            btn.classList.add('opacity-70');
 
             try {
                 const base64Image = await compressImage(fileInput.files[0]);
@@ -619,141 +442,161 @@
                 showToast("Upload failed.", "❌");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = originalBtnText;
-                btn.classList.remove('opacity-70');
+                btn.innerHTML = `Join the Battle! 💥`;
             }
         };
 
-        window.handleVote = async (e) => {
-            e.preventDefault();
-            
-            if (!votingOpen) {
-                showToast("Voting is currently locked!", "🔒");
-                closeVoteModal();
+        function renderGrid() {
+            const grid = document.getElementById('costume-grid');
+            const filtered = costumes.filter(c => (c.category || 'single') === activeCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-400"><p class="text-xl font-bold">No entries yet!</p></div>`;
                 return;
             }
 
-            const costumeId = document.getElementById('vote-costume-id').value;
-            const voterLdap = document.getElementById('voter-ldap').value.trim().toLowerCase();
+            grid.innerHTML = filtered.sort((a, b) => b.createdAt - a.createdAt).map(c => {
+                const voteCount = c.voters ? c.voters.length : 0;
+                let btnHtml = votingOpen ? 
+                    `<button onclick="window.openVoteModal('${c.id}')" class="w-full bg-[#33CCFF] text-white font-black py-3 rounded-xl shadow-md border-b-4 border-[#0091C8] active:border-b-0">Like</button>` :
+                    `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl cursor-not-allowed">🔒 Locked</button>`;
 
-            if (!voterLdap) return;
+                return `
+                    <div class="waze-card overflow-hidden flex flex-col h-full relative">
+                        <div class="h-64 overflow-hidden relative">
+                            <img src="${c.image}" class="w-full h-full object-cover">
+                            ${isAdminAuthenticated ? `<button onclick="deleteCostume('${c.id}')" class="absolute top-4 left-4 bg-white p-2 rounded-full text-red-500 shadow-lg">🗑️</button>` : ''}
+                            <div class="absolute top-4 right-4 bg-white/95 px-4 py-2 rounded-full font-black text-[#FFC400] shadow-lg border-2 border-white">👍 ${voteCount}</div>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="text-xl font-black text-[#4A435C] leading-tight">${escapeHtml(c.costumeName)}</h3>
+                            <p class="text-xs font-bold text-gray-400 uppercase">@${escapeHtml(c.ldap)}</p>
+                            <div class="mt-auto pt-4">${btnHtml}</div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
 
-            const costume = costumes.find(c => c.id === costumeId);
-            if (costume && costume.voters && costume.voters.map(v => v.toLowerCase()).includes(voterLdap)) {
-                showToast("Already voted!", "✋");
-                closeVoteModal();
+        function renderRankings() {
+            const list = document.getElementById('ranking-list');
+            const sorted = costumes.filter(c => (c.category || 'single') === activeCategory)
+                                   .sort((a, b) => (b.voters?.length || 0) - (a.voters?.length || 0));
+
+            if (sorted.length === 0) {
+                list.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400 font-bold">No entries yet.</td></tr>`;
                 return;
             }
 
-            try {
-                const docRef = doc(db, ...COSTUMES_COLLECTION_PATH, costumeId);
-                const freshDoc = await getDoc(docRef);
-                
-                if (freshDoc.exists()) {
-                    const data = freshDoc.data();
-                    const currentVoters = data.voters || [];
-                    
-                    if (currentVoters.map(v => v.toLowerCase()).includes(voterLdap)) {
-                        showToast("Already voted!", "✋");
-                    } else {
-                        await updateDoc(docRef, { voters: arrayUnion(voterLdap) });
-                        showToast("Vote Counted!", "🗳️");
-                    }
-                }
-                closeVoteModal();
-            } catch (error) {
-                console.error("Vote error", error);
-                showToast("Vote failed.", "❌");
+            list.innerHTML = sorted.map((c, i) => `
+                <tr class="hover:bg-blue-50/50">
+                    <td class="p-4 font-bold text-gray-400">${i < 3 ? ['🥇','🥈','🥉'][i] : '#' + (i+1)}</td>
+                    <td class="p-4 font-bold text-[#4A435C]">${escapeHtml(c.ldap)}</td>
+                    <td class="hidden md:table-cell p-4 text-gray-500">${escapeHtml(c.costumeName)}</td>
+                    <td class="p-4 text-right font-black text-[#33CCFF] text-lg">${c.voters?.length || 0}</td>
+                </tr>`).join('');
+        }
+
+        function updateVotingStatusUI() {
+            const statusMsg = document.getElementById('voting-status-msg');
+            const toggleContainer = document.getElementById('voting-toggle-btn-container');
+            statusMsg.innerHTML = votingOpen ? `Vote for the most epic <span class="text-[#33CCFF]">Hero</span> or <span class="text-[#FF5C5C]">Villain</span>.` : `<span class="bg-gray-200 text-gray-500 px-3 py-1 rounded-lg text-sm">🔒 Voting is currently locked</span>`;
+            if (isAdminAuthenticated) {
+                toggleContainer.innerHTML = `<button onclick="toggleVoting(${!votingOpen})" class="w-full ${votingOpen ? 'bg-red-500' : 'bg-green-500'} text-white font-bold py-3 rounded-xl shadow-lg">${votingOpen ? '🔴 Stop Voting' : '🟢 Start Voting'}</button>`;
+            }
+        }
+
+        // Helper & Global Functions
+        window.switchCategory = (cat) => {
+            activeCategory = cat;
+            document.getElementById('tab-single').className = cat === 'single' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
+            document.getElementById('tab-group').className = cat === 'group' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
+            document.getElementById('lb-title-suffix').textContent = cat === 'single' ? '(Single)' : '(Group)';
+            renderGrid();
+            renderRankings();
+        };
+
+        window.toggleVoting = async (newState) => {
+            await setDoc(doc(db, ...COSTUMES_COLLECTION_PATH, CONFIG_DOC_ID), { isOpen: newState }, { merge: true });
+            showToast(newState ? "Voting Enabled!" : "Voting Disabled!", newState ? "🟢" : "🔴");
+        };
+
+        window.verifyAdmin = () => {
+            const input = document.getElementById('admin-ldap').value.trim().toLowerCase();
+            if (ADMIN_USERS.includes(input)) {
+                isAdminAuthenticated = true;
+                document.getElementById('admin-login-view').classList.add('hidden');
+                document.getElementById('admin-controls-view').classList.remove('hidden');
+                renderGrid();
+                updateVotingStatusUI();
+                showToast("Admin Unlocked", "🔓");
+            } else {
+                showToast("Access Denied", "⛔");
             }
         };
 
-        function compressImage(file) {
-            return new Promise((resolve, reject) => {
+        window.deleteCostume = async (id) => {
+            if(confirm("Delete this entry?")) {
+                await deleteDoc(doc(db, ...COSTUMES_COLLECTION_PATH, id));
+                showToast("Deleted", "🗑️");
+            }
+        };
+
+        async function compressImage(file) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = (event) => {
+                reader.onload = (e) => {
                     const img = new Image();
-                    img.src = event.target.result;
+                    img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         const MAX_SIZE = 800;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
-                        } else {
-                            if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
+                        let w = img.width, h = img.height;
+                        if (w > h) { if (w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } }
+                        else { if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; } }
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                         resolve(canvas.toDataURL('image/jpeg', 0.7));
                     };
-                    img.onerror = (err) => reject(err);
                 };
-                reader.onerror = (err) => reject(err);
             });
         }
 
-        function escapeHtml(text) {
-            if (!text) return "";
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function showToast(message, icon) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = message;
-            document.getElementById('toast-icon').textContent = icon;
-            
-            // Slide down into view (translate-y-0)
-            toast.classList.remove('-translate-y-40');
-            toast.classList.add('translate-y-0');
-            
-            setTimeout(() => {
-                // Slide back up out of view
-                toast.classList.remove('translate-y-0');
-                toast.classList.add('-translate-y-40');
-            }, 3000);
+        function escapeHtml(t) { return t?.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])) || ""; }
+        function showToast(m, i) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = m;
+            document.getElementById('toast-icon').textContent = i;
+            t.classList.remove('-translate-y-40');
+            setTimeout(() => t.classList.add('-translate-y-40'), 3000);
         }
 
         window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
         window.closeUploadModal = () => document.getElementById('upload-modal').classList.add('hidden');
-        
         window.openVoteModal = (id) => {
-            if (!votingOpen) {
-                showToast("Voting is currently locked!", "🔒");
-                return;
-            }
+            if (!votingOpen) return showToast("Locked!", "🔒");
             document.getElementById('vote-costume-id').value = id;
             document.getElementById('vote-modal').classList.remove('hidden');
-            document.getElementById('voter-ldap').focus();
         };
         window.closeVoteModal = () => document.getElementById('vote-modal').classList.add('hidden');
-
+        window.openAdminPanel = () => document.getElementById('admin-modal').classList.remove('hidden');
+        window.closeAdminPanel = () => document.getElementById('admin-modal').classList.add('hidden');
         window.previewImage = (input) => {
-            if (input.files && input.files[0]) {
+            if (input.files?.[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     document.getElementById('image-preview-area').style.display = 'none';
                     const img = document.getElementById('preview-img');
                     img.src = e.target.result;
                     img.classList.remove('hidden');
-                }
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         };
 
-        window.onclick = function(event) {
-            const upModal = document.getElementById('upload-modal');
-            const vModal = document.getElementById('vote-modal');
-            const aModal = document.getElementById('admin-modal');
-            if (event.target == upModal) closeUploadModal();
-            if (event.target == vModal) closeVoteModal();
-            if (event.target == aModal) closeAdminPanel();
-        }
+        window.onclick = (e) => {
+            if (e.target.id.endsWith('modal')) e.target.classList.add('hidden');
+        };
     </script>
 </body>
 </html>
