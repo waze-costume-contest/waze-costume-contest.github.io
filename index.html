@@ -99,4 +99,250 @@
             <div class="bg-white rounded-[2rem] shadow-xl border-4 border-white overflow-hidden">
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-gray-50 border-b border-gray-100">
-                        <tr class="text-gray-400 text-xs uppercase font-bold
+                        <tr class="text-gray-400 text-xs uppercase font-bold">
+                            <th class="p-4 pl-6">Rank</th>
+                            <th class="p-4">Wazer</th>
+                            <th class="p-4 pr-6 text-right">Total Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ranking-list" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center pb-8 pt-4">
+        <button onclick="resetLdap()" class="text-gray-300 hover:text-gray-500 text-[10px] font-bold uppercase tracking-widest">Logout / Change Identity</button>
+    </footer>
+
+    <div id="disclosure-modal" class="fixed inset-0 bg-[#4A435C]/80 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl p-8 text-center border-4 border-white">
+            <div class="text-4xl mb-4">👋</div>
+            <h3 class="text-2xl font-black mb-2">Welcome!</h3>
+            <p class="text-gray-500 mb-6 font-medium text-sm">Enter your <span class="font-bold text-[#33CCFF]">LDAP</span> to view your votes and join the battle.</p>
+            <input type="text" id="initial-ldap" class="w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl font-black text-center mb-6 outline-none focus:border-[#33CCFF]" placeholder="LDAP">
+            <button onclick="saveInitialLdap()" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg">Enter Arena</button>
+        </div>
+    </div>
+
+    <div id="vote-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[110] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl overflow-hidden">
+            <div class="bg-[#FFC400] p-6 text-center text-white font-black text-2xl">👍 Awesome!</div>
+            <form id="vote-form" onsubmit="handleVote(event)" class="p-6 space-y-4 text-center">
+                <input type="hidden" id="vote-costume-id">
+                <p id="voter-confirm-text" class="text-sm font-bold text-gray-500"></p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="closeVoteModal()" class="text-gray-400 font-bold">Cancel</button>
+                    <button type="submit" class="bg-[#FFC400] text-white font-black py-3 rounded-xl shadow-md border-b-4 border-[#FF8F00] active:border-b-0">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[120] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md p-6 shadow-2xl border-4 border-white relative">
+            <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-gray-400">✖</button>
+            <h3 class="text-2xl font-black text-[#4A435C] mb-6">New Entry</h3>
+            <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="cursor-pointer"><input type="radio" name="contestType" value="single" checked class="peer sr-only">
+                    <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-bold">👤 Single</div></label>
+                    <label class="cursor-pointer"><input type="radio" name="contestType" value="group" class="peer sr-only">
+                    <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-bold">👨‍👩‍👧‍👦 Group</div></label>
+                </div>
+                <div class="border-4 border-dashed rounded-3xl p-6 text-center cursor-pointer" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
+                    <div id="upload-placeholder" class="font-bold text-gray-400 uppercase text-xs">📸 Tap to snap photo</div>
+                    <img id="preview-img" class="hidden w-full h-48 object-cover rounded-2xl shadow-sm">
+                </div>
+                <input type="text" id="uploader-ldap-readonly" class="w-full px-5 py-3 bg-gray-100 border-2 rounded-xl font-bold text-gray-500" readonly>
+                <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 rounded-xl font-bold outline-none focus:border-[#33CCFF]" placeholder="Costume Name" required>
+                <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg">Join the Battle! 💥</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 -translate-y-40 transition-all duration-500 z-[200] bg-[#4A435C] text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-2">
+        <span id="toast-icon"></span> <span id="toast-msg"></span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCfx3wajLL12k12Yq43rvcqedRRjnKK92Y", authDomain: "waze-costume-party.firebaseapp.com",
+            projectId: "waze-costume-party", storageBucket: "waze-costume-party.firebasestorage.app",
+            messagingSenderId: "1057125475439", appId: "1:1057125475439:web:2e1042532a0bbd572f199a"
+        };
+
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
+        const COSTUMES_PATH = ['artifacts', 'waze-costumes-default', 'public', 'data', 'contest_entries'];
+        const ADMIN_LIST = ['shirelk', 'frim', 'szilka', 'ronp'];
+        
+        let costumes = [], votingOpen = false, activeCategory = 'single', userLdap = null;
+
+        async function init() {
+            await signInAnonymously(auth);
+            userLdap = localStorage.getItem('voterLdap');
+            if(!userLdap) {
+                document.getElementById('disclosure-modal').classList.remove('hidden');
+            } else {
+                applyIdentity();
+            }
+
+            onSnapshot(collection(db, ...COSTUMES_PATH), (snap) => {
+                costumes = [];
+                snap.forEach(d => d.id === '_config_' ? votingOpen = d.data().isOpen : costumes.push({id: d.id, ...d.data()}));
+                renderGrid(); updateUI(); renderRankings();
+            });
+        }
+        init();
+
+        window.saveInitialLdap = () => {
+            const input = document.getElementById('initial-ldap').value.trim().toLowerCase();
+            if(!input) return;
+            localStorage.setItem('voterLdap', input);
+            userLdap = input;
+            document.getElementById('disclosure-modal').classList.add('hidden');
+            applyIdentity(); renderGrid(); renderRankings(); updateUI();
+        };
+
+        window.resetLdap = () => { if(confirm("Change identity?")) { localStorage.removeItem('voterLdap'); location.reload(); } };
+
+        function applyIdentity() {
+            if(!userLdap) return;
+            document.getElementById('user-display').textContent = `@${userLdap}`;
+            document.getElementById('uploader-ldap-readonly').value = userLdap;
+            if(ADMIN_LIST.includes(userLdap)) {
+                document.body.classList.add('is-admin');
+            }
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('costume-grid');
+            const filtered = costumes.filter(c => (c.category || 'single') === activeCategory);
+            const usedInCat = costumes.filter(c => (c.category || 'single') === activeCategory && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
+            document.getElementById('remaining-votes').textContent = 3 - usedInCat;
+
+            grid.innerHTML = filtered.length ? filtered.sort((a,b)=>b.createdAt - a.createdAt).map(c => {
+                const hasVoted = userLdap && c.voters?.map(v => v.toLowerCase()).includes(userLdap);
+                return `
+                <div class="waze-card overflow-hidden flex flex-col h-full relative">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${c.image}" class="w-full h-full object-cover">
+                        ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1">✅ Voted</div>` : ''}
+                        
+                        <div class="admin-only absolute top-4 left-4">
+                            <button onclick="deleteEntry('${c.id}')" class="bg-white p-2 rounded-full text-red-500 shadow-md">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="text-xl font-black text-[#4A435C]">${c.costumeName}</h3>
+                        <p class="text-xs font-bold text-gray-400 uppercase">@${c.ldap}</p>
+                        <div class="mt-auto pt-4">
+                            ${votingOpen ? (hasVoted ? `<button disabled class="w-full bg-green-50 text-green-500 font-black py-3 rounded-xl border-2 border-green-200">Selected</button>` : 
+                            `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl">Vote</button>`)
+                            : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl">🔒 Voted</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`)}
+                        </div>
+                    </div>
+                </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold">Waiting for entries...</div>';
+        }
+
+        window.handleVote = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('vote-costume-id').value;
+            const target = costumes.find(c => c.id === id);
+            const category = target.category || 'single';
+            const catVotes = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
+            if (target.voters?.map(v => v.toLowerCase()).includes(userLdap)) return showToast("Already voted!", "✋");
+            if (catVotes >= 3) return showToast("Max 3 votes per category reached!", "🚫");
+            await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayUnion(userLdap) });
+            showToast("Vote Counted!", "🗳️"); closeVoteModal();
+        };
+
+        window.toggleVoting = async (state) => { await setDoc(doc(db, ...COSTUMES_PATH, '_config_'), { isOpen: state }, { merge: true }); };
+
+        function renderRankings() {
+            if (!ADMIN_LIST.includes(userLdap)) return;
+            const sorted = costumes.filter(c => (c.category || 'single') === activeCategory).sort((a,b)=>(b.voters?.length||0)-(a.voters?.length||0));
+            document.getElementById('ranking-list').innerHTML = sorted.map((c, i) => `
+                <tr class="font-bold">
+                    <td class="p-4 text-gray-400">#${i+1}</td>
+                    <td class="p-4 text-[#4A435C]">${c.ldap}</td>
+                    <td class="p-4 text-right text-[#33CCFF] text-lg">${c.voters?.length||0}</td>
+                </tr>`).join('');
+        }
+
+        function updateUI() {
+            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `Voting is <span class="text-[#33CCFF] animate-pulse">LIVE</span>!` : `Voting starts at 8:45 PM.`;
+            if(ADMIN_LIST.includes(userLdap)) {
+                document.getElementById('admin-actions').innerHTML = `
+                <button onclick="toggleVoting(${!votingOpen})" class="bg-white ${votingOpen?'text-red-500':'text-green-600'} font-black px-4 py-2 rounded-xl text-[10px] shadow-md">
+                    ${votingOpen ? '🛑 STOP VOTING' : '🟢 START VOTING'}
+                </button>`;
+            }
+        }
+
+        window.deleteEntry = async (id) => { if(confirm("Delete this entry?")) await deleteDoc(doc(db, ...COSTUMES_PATH, id)); };
+
+        /* UI Helpers */
+        window.switchCategory = (cat) => {
+            activeCategory = cat;
+            document.getElementById('tab-single').className = cat === 'single' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
+            document.getElementById('tab-group').className = cat === 'group' ? 'tab-active px-6 py-2 rounded-full font-bold' : 'tab-inactive px-6 py-2 rounded-full font-bold';
+            renderGrid(); renderRankings();
+        };
+        window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
+        window.closeUploadModal = () => document.getElementById('upload-modal').classList.add('hidden');
+        window.openVoteModal = (id) => {
+            document.getElementById('vote-costume-id').value = id;
+            document.getElementById('voter-confirm-text').innerHTML = `Confirm your vote for <span class="text-[#33CCFF] font-black">${costumes.find(c=>c.id===id).costumeName}</span>?`;
+            document.getElementById('vote-modal').classList.remove('hidden');
+        };
+        window.closeVoteModal = () => document.getElementById('vote-modal').classList.add('hidden');
+        window.previewImage = (input) => {
+            if (input.files?.[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('upload-placeholder').style.display = 'none';
+                    const img = document.getElementById('preview-img');
+                    img.src = e.target.result; img.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+        function showToast(m, i) {
+            const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = m; document.getElementById('toast-icon').textContent = i;
+            t.classList.remove('-translate-y-40'); setTimeout(() => t.classList.add('-translate-y-40'), 3000);
+        }
+        async function compressImage(file) {
+            return new Promise(res => {
+                const r = new FileReader(); r.readAsDataURL(file);
+                r.onload = e => {
+                    const img = new Image(); img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas'); const MAX = 800; let w = img.width, h = img.height;
+                        if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } } else { if (h > MAX) { w *= MAX/h; h = MAX; } }
+                        canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        res(canvas.toDataURL('image/jpeg', 0.7));
+                    };
+                };
+            });
+        }
+        window.handleUpload = async (e) => {
+            e.preventDefault(); const btn = document.getElementById('submit-btn');
+            if (costumes.some(c => c.ldap === userLdap)) return showToast("Already entered!", "🚫");
+            btn.disabled = true; btn.innerHTML = "Uploading...";
+            const img = await compressImage(document.getElementById('file-input').files[0]);
+            await addDoc(collection(db, ...COSTUMES_PATH), {
+                ldap: userLdap, costumeName: document.getElementById('costume-name').value, image: img,
+                category: document.querySelector('input[name="contestType"]:checked').value, voters: [], createdAt: Date.now()
+            });
+            showToast("Arena Joined!", "🏟️"); closeUploadModal(); btn.disabled = false;
+        };
+        window.onclick = (e) => { if (e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
+    </script>
+</body>
+</html>
