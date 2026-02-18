@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H vs V 2026</title>
+    <title>Heroes vs Villains 2026</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦸</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -55,16 +55,28 @@
             <div class="flex items-center gap-2 flex-shrink-0">
                 <div id="vote-counter-pill" class="hidden sm:flex bg-white px-3 py-1.5 rounded-full items-center gap-2 border border-gray-100 shadow-inner">
                     <span id="remaining-votes" class="text-xs font-black text-[#33CCFF]">3</span>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">Votes Left</span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Remaining Votes</span>
                 </div>
                 <button onclick="openUploadModal()" class="bg-[#33CCFF] text-white font-bold py-2 px-4 rounded-full shadow-md border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 text-xs md:text-sm whitespace-nowrap">Enter Contest</button>
             </div>
         </div>
     </header>
 
+    <section class="container mx-auto max-w-5xl px-4 mt-8">
+        <div class="bg-blue-50 border-2 border-blue-100 rounded-3xl p-5 md:p-6 shadow-sm flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+            <div class="bg-blue-600 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md flex-shrink-0">⚡</div>
+            <div>
+                <h4 class="font-black text-blue-900 text-lg leading-tight mb-1">Join the Showdown!</h4>
+                <p class="text-blue-800 text-sm md:text-base leading-relaxed">
+                    Manifest your costume at the photo wall and upload it here! Submissions close at <span class="font-bold">8:45 PM</span>. Voting runs from <span class="font-bold">8:45 PM to 9:00 PM</span>. Cast three votes for each category. Winners revealed after the High Council final verdict!
+                </p>
+            </div>
+        </div>
+    </section>
+
     <main class="container mx-auto max-w-5xl p-4 flex-grow relative">
         <div class="text-center py-6 md:py-10">
-            <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2 uppercase tracking-tighter">Heroes vs Villains: The Ultimate Showdown</h2>
+            <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2 uppercase tracking-tighter">Choose Your Side</h2>
             <p id="voting-status-msg" class="text-gray-500 font-semibold italic text-sm">Ready for battle...</p>
         </div>
 
@@ -98,7 +110,7 @@
     </main>
 
     <div class="admin-only fixed bottom-6 right-6 z-50">
-        <div class="bg-purple-600 text-white rounded-full shadow-2xl p-1.5 flex items-center gap-2 border-2 border-white/20 backdrop-blur-md">
+        <div id="admin-pill" class="bg-purple-600 text-white rounded-full shadow-2xl p-1.5 flex items-center gap-2 border-2 border-white/20 backdrop-blur-md">
             <div class="pl-4 pr-3 py-1 border-r border-white/10">
                 <span class="text-[9px] font-black uppercase block opacity-70">Voting Status</span>
                 <span id="admin-status-text" class="text-[11px] font-black uppercase tracking-widest leading-none">...</span>
@@ -113,8 +125,12 @@
         <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl p-8 text-center border-4 border-white">
             <div class="text-4xl mb-4">🛡️</div>
             <h3 class="text-2xl font-black mb-2">Identify Yourself</h3>
-            <p class="text-gray-500 mb-6 font-medium text-sm">Verify your <span class="font-bold text-[#33CCFF]">LDAP</span> to reveal your secret votes.</p>
+            <p class="text-gray-500 mb-6 font-medium text-sm">Verify your <span class="font-bold text-[#33CCFF]">LDAP</span> to reveal your secret votes and join the fight.</p>
             <input type="text" id="initial-ldap" class="w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl font-black text-center mb-4 outline-none focus:border-[#33CCFF]" placeholder="LDAP">
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-6 flex gap-2 text-left">
+                <span class="text-amber-600 font-bold">⚠️</span>
+                <p class="text-[11px] text-amber-800 font-bold leading-tight">Public Access: Photos and names are visible to anyone with this link.</p>
+            </div>
             <button onclick="saveInitialLdap()" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg shadow-lg">Authenticate</button>
         </div>
     </div>
@@ -126,7 +142,7 @@
             <p id="voter-confirm-text" class="text-xs font-bold text-gray-400 px-2 mb-4"></p>
             <input type="hidden" id="vote-costume-id">
             <div class="flex flex-col gap-2">
-                <button onclick="handleVoteSubmit()" class="w-full btn-waze-primary font-black py-3 rounded-xl shadow-md">Confirm</button>
+                <button onclick="handleVoteSubmit()" class="w-full btn-waze-primary font-black py-3 rounded-xl shadow-md">Confirm Endorsement</button>
                 <button onclick="closeModal('vote-modal')" class="text-xs font-bold text-gray-400 py-1">Retreat</button>
             </div>
         </div>
@@ -135,12 +151,12 @@
     <div id="remove-vote-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[115] p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-[280px] shadow-2xl p-6 text-center border-4 border-white">
             <div class="w-12 h-12 bg-red-50 text-[#FF5C5C] rounded-full flex items-center justify-center text-xl mx-auto mb-4 font-bold">🗑️</div>
-            <h3 class="text-xl font-black text-[#4A435C] mb-2">Retract Vote?</h3>
+            <h3 class="text-xl font-black text-[#4A435C] mb-2">Remove Endorsement?</h3>
             <p id="remove-confirm-text" class="text-xs font-bold text-gray-400 px-2 mb-4"></p>
             <input type="hidden" id="remove-costume-id">
             <div class="flex flex-col gap-2">
-                <button onclick="handleRemoveVoteSubmit()" class="w-full btn-waze-danger font-black py-3 rounded-xl shadow-md">Remove Vote</button>
-                <button onclick="closeModal('remove-vote-modal')" class="text-xs font-bold text-gray-400 py-1">Keep It</button>
+                <button onclick="handleRemoveVoteSubmit()" class="w-full btn-waze-danger font-black py-3 rounded-xl shadow-md">Confirm Removal</button>
+                <button onclick="closeModal('remove-vote-modal')" class="text-xs font-bold text-gray-400 py-1">Retreat</button>
             </div>
         </div>
     </div>
@@ -148,21 +164,31 @@
     <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[120] p-4 overflow-y-auto">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-6 shadow-2xl border-4 border-white relative my-auto">
             <button onclick="closeModal('upload-modal')" class="absolute top-4 right-4 text-gray-400 text-xl font-bold">✖</button>
-            <h3 class="text-2xl font-black text-[#4A435C] mb-6">Choose Your Fate</h3>
+            <h3 class="text-2xl font-black text-[#4A435C] mb-1">Choose Your Fate</h3>
+            <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-6">Register your super-power for the contest</p>
             <form id="upload-form" onsubmit="handleUpload(event)" class="space-y-6">
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="cursor-pointer"><input type="radio" name="contestType" value="single" checked class="peer sr-only">
-                    <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-black uppercase text-[10px]">Solo Hero</div></label>
-                    <label class="cursor-pointer"><input type="radio" name="contestType" value="group" class="peer sr-only">
-                    <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-black uppercase text-[10px]">Super Group</div></label>
+                <div>
+                    <label class="block text-gray-500 text-[10px] font-black uppercase mb-2 tracking-widest">Select Category</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer"><input type="radio" name="contestType" value="single" checked class="peer sr-only">
+                        <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-black uppercase text-[10px]">Solo Hero</div></label>
+                        <label class="cursor-pointer"><input type="radio" name="contestType" value="group" class="peer sr-only">
+                        <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-black uppercase text-[10px]">Super Group</div></label>
+                    </div>
                 </div>
                 <div class="border-4 border-dashed rounded-3xl p-6 text-center cursor-pointer" onclick="document.getElementById('file-input').click()">
                     <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
-                    <div id="upload-placeholder" class="text-[10px] font-black uppercase text-[#33CCFF]">📸 Tap to take photo</div>
-                    <img id="preview-img" class="hidden w-full h-40 object-cover rounded-2xl">
+                    <div id="upload-placeholder">
+                        <div class="text-3xl mb-1">📸</div>
+                        <div class="font-black text-[#33CCFF] uppercase text-[10px] tracking-widest leading-tight">Click to take<br>a photo of your costume</div>
+                    </div>
+                    <img id="preview-img" class="hidden w-full h-40 object-cover rounded-2xl shadow-sm">
                 </div>
-                <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 rounded-xl font-black outline-none focus:border-[#33CCFF]" placeholder="Character Alias" required>
-                <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg uppercase">Join Battle 💥</button>
+                <div class="space-y-4">
+                    <input type="text" id="uploader-ldap-readonly" class="w-full px-5 py-3 bg-gray-100 border-2 rounded-xl font-black text-gray-400 text-sm" readonly>
+                    <input type="text" id="costume-name" class="w-full px-5 py-3 bg-gray-50 border-2 rounded-xl font-black outline-none focus:border-[#33CCFF] text-sm" placeholder="Character Alias (e.g. Wonder Woman)" required>
+                </div>
+                <button type="submit" id="submit-btn" class="w-full btn-waze-primary font-black py-4 rounded-xl text-lg uppercase tracking-wider">Join the Battle 💥</button>
             </form>
         </div>
     </div>
@@ -223,6 +249,7 @@
         function applyIdentity() {
             if(!userLdap) return;
             document.getElementById('user-display').textContent = `@${userLdap}`;
+            document.getElementById('uploader-ldap-readonly').value = userLdap;
             if(ADMIN_LIST.includes(userLdap)) document.body.classList.add('is-admin');
         }
 
@@ -242,7 +269,7 @@
                 <div class="waze-card overflow-hidden flex flex-col h-full relative">
                     <div class="h-64 overflow-hidden relative">
                         <img src="${c.image}" class="w-full h-full object-cover">
-                        ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white text-[10px] uppercase">✅ Selected</div>` : ''}
+                        ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1 uppercase text-[10px]">✅ Selected</div>` : ''}
                         <div class="admin-only absolute top-4 left-4">
                             <button onclick="deleteEntry('${c.id}')" class="bg-white/90 p-2 rounded-full text-red-500 shadow-md">🗑️</button>
                         </div>
@@ -252,9 +279,9 @@
                         <p class="text-xs font-bold text-gray-400 uppercase">@${c.ldap}</p>
                         <div class="mt-auto pt-4">
                             ${votingOpen ? (hasVoted ? 
-                                `<button onclick="openRemoveModal('${c.id}')" class="w-full bg-white text-[#FF5C5C] font-black py-3 rounded-xl border-2 border-[#FF5C5C] text-xs hover:bg-red-50">Remove Vote</button>` : 
-                                `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl uppercase text-xs">Endorse Ally</button>`)
-                                : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl text-xs uppercase">✅ Selected</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl text-xs uppercase">🔒 Locked</button>`)}
+                                `<button onclick="openRemoveModal('${c.id}')" class="w-full bg-white text-[#FF5C5C] font-black py-3 rounded-xl border-2 border-[#FF5C5C] hover:bg-red-50 transition text-xs">Remove Vote</button>` : 
+                                `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl uppercase text-xs tracking-wider">Endorse Ally</button>`)
+                                : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl text-xs uppercase tracking-wider">✅ Selected</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl text-xs uppercase tracking-wider">🔒 Locked</button>`)}
                         </div>
                     </div>
                 </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold uppercase tracking-widest text-xs">No signatures detected...</div>';
@@ -263,7 +290,7 @@
         window.openVoteModal = (id) => {
             const target = costumes.find(c => c.id === id);
             document.getElementById('vote-costume-id').value = id;
-            document.getElementById('voter-confirm-text').innerHTML = `Submit support for <span class="text-[#33CCFF]">${target.costumeName}</span>?`;
+            document.getElementById('voter-confirm-text').innerHTML = `Submit support for <span class="text-[#33CCFF] font-black">${target.costumeName}</span>?`;
             document.getElementById('vote-modal').classList.remove('hidden');
         };
 
@@ -272,7 +299,7 @@
             const target = costumes.find(c => c.id === id);
             const category = target.category || 'single';
             const catVotes = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
-            if (catVotes >= 3) { showToast("Limit reached!", "🚫"); return; }
+            if (catVotes >= 3) return showToast("Limit reached!", "🚫");
             await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayUnion(userLdap) });
             showToast("Success!", "🗳️"); closeModal('vote-modal');
         };
@@ -280,7 +307,7 @@
         window.openRemoveModal = (id) => {
             const target = costumes.find(c => c.id === id);
             document.getElementById('remove-costume-id').value = id;
-            document.getElementById('remove-confirm-text').innerHTML = `Withdraw support for <span class="text-[#FF5C5C] font-black">${target.costumeName}</span>?`;
+            document.getElementById('remove-confirm-text').innerHTML = `Remove support for <span class="text-[#FF5C5C] font-black">${target.costumeName}</span>?`;
             document.getElementById('remove-vote-modal').classList.remove('hidden');
         };
 
@@ -305,7 +332,7 @@
         }
 
         function updateUI() {
-            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `The clash is <span class="text-[#33CCFF] animate-pulse font-black uppercase">Live</span>!` : `Starts at 8:45 PM.`;
+            document.getElementById('voting-status-msg').innerHTML = votingOpen ? `The clash of powers is <span class="text-[#33CCFF] animate-pulse font-black uppercase">Live</span>!` : `Battle energy begins accumulating at 8:45 PM.`;
             if(ADMIN_LIST.includes(userLdap)) {
                 const statusTxt = document.getElementById('admin-status-text');
                 statusTxt.textContent = votingOpen ? 'Open' : 'Closed';
@@ -327,7 +354,7 @@
             if (input.files?.[0]) {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    document.getElementById('upload-placeholder').classList.add('hidden');
+                    document.getElementById('upload-placeholder').style.display = 'none';
                     const img = document.getElementById('preview-img');
                     img.src = e.target.result; img.classList.remove('hidden');
                 };
