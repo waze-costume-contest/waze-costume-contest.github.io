@@ -55,7 +55,7 @@
             <div class="flex items-center gap-2 flex-shrink-0">
                 <div id="vote-counter-pill" class="hidden sm:flex bg-white px-3 py-1.5 rounded-full items-center gap-2 border border-gray-100 shadow-inner">
                     <span id="remaining-votes" class="text-xs font-black text-[#33CCFF]">3</span>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Remaining Votes</span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Remaining Votes</span>
                 </div>
                 <button onclick="openUploadModal()" class="bg-[#33CCFF] text-white font-bold py-2 px-4 rounded-full shadow-md border-b-4 border-[#0091C8] active:border-b-0 active:translate-y-1 text-xs md:text-sm whitespace-nowrap">Enter Contest</button>
             </div>
@@ -115,9 +115,7 @@
                 <span class="text-[9px] font-black uppercase block opacity-70">Voting Status</span>
                 <span id="admin-status-text" class="text-[11px] font-black uppercase tracking-widest leading-none">...</span>
             </div>
-            <button onclick="toggleVotingFromPill()" class="bg-white text-purple-600 font-black px-4 py-2 rounded-full text-[10px] uppercase shadow-md active:scale-95 transition-transform">
-                Toggle
-            </button>
+            <button onclick="toggleVotingFromPill()" class="bg-white text-purple-600 font-black px-4 py-2 rounded-full text-[10px] uppercase shadow-md active:scale-95 transition-transform">Toggle</button>
         </div>
     </div>
 
@@ -161,6 +159,19 @@
         </div>
     </div>
 
+    <div id="delete-entry-modal" class="fixed inset-0 bg-[#4A435C]/80 backdrop-blur-md hidden flex items-center justify-center z-[130] p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-[280px] shadow-2xl p-6 text-center border-4 border-white">
+            <div class="w-12 h-12 bg-gray-100 text-gray-800 rounded-full flex items-center justify-center text-xl mx-auto mb-4 font-bold">🚨</div>
+            <h3 class="text-xl font-black text-[#4A435C] mb-2">Terminate Manifest?</h3>
+            <p id="delete-confirm-text" class="text-xs font-bold text-gray-400 px-2 mb-4"></p>
+            <input type="hidden" id="delete-entry-id">
+            <div class="flex flex-col gap-2">
+                <button onclick="handleDeleteEntrySubmit()" class="w-full bg-black text-white font-black py-3 rounded-xl shadow-md uppercase text-xs">Confirm Destruction</button>
+                <button onclick="closeModal('delete-entry-modal')" class="text-xs font-bold text-gray-400 py-1">Abort</button>
+            </div>
+        </div>
+    </div>
+
     <div id="upload-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[120] p-4 overflow-y-auto">
         <div class="bg-white rounded-[2rem] w-full max-w-md p-6 shadow-2xl border-4 border-white relative my-auto">
             <button onclick="closeModal('upload-modal')" class="absolute top-4 right-4 text-gray-400 text-xl font-bold">✖</button>
@@ -176,7 +187,7 @@
                         <div class="rounded-xl border-2 p-3 text-center peer-checked:border-[#33CCFF] peer-checked:bg-blue-50 font-black uppercase text-[10px]">Super Group</div></label>
                     </div>
                 </div>
-                <div class="border-4 border-dashed rounded-3xl p-6 text-center cursor-pointer" onclick="document.getElementById('file-input').click()">
+                <div class="border-4 border-dashed rounded-3xl p-6 text-center cursor-pointer hover:bg-gray-50" onclick="document.getElementById('file-input').click()">
                     <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
                     <div id="upload-placeholder">
                         <div class="text-3xl mb-1">📸</div>
@@ -271,7 +282,7 @@
                         <img src="${c.image}" class="w-full h-full object-cover">
                         ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1 uppercase text-[10px]">✅ Selected</div>` : ''}
                         <div class="admin-only absolute top-4 left-4">
-                            <button onclick="deleteEntry('${c.id}')" class="bg-white/90 p-2 rounded-full text-red-500 shadow-md">🗑️</button>
+                            <button onclick="openDeleteEntryModal('${c.id}')" class="bg-white/90 p-2 rounded-full text-red-500 shadow-md">🗑️</button>
                         </div>
                     </div>
                     <div class="p-5 flex flex-col flex-grow">
@@ -294,6 +305,20 @@
             document.getElementById('vote-modal').classList.remove('hidden');
         };
 
+        window.openRemoveModal = (id) => {
+            const target = costumes.find(c => c.id === id);
+            document.getElementById('remove-costume-id').value = id;
+            document.getElementById('remove-confirm-text').innerHTML = `Remove support for <span class="text-[#FF5C5C] font-black">${target.costumeName}</span>?`;
+            document.getElementById('remove-vote-modal').classList.remove('hidden');
+        };
+
+        window.openDeleteEntryModal = (id) => {
+            const target = costumes.find(c => c.id === id);
+            document.getElementById('delete-entry-id').value = id;
+            document.getElementById('delete-confirm-text').innerHTML = `Permanently delete <span class="text-[#FF5C5C] font-black">${target.costumeName}</span>?`;
+            document.getElementById('delete-entry-modal').classList.remove('hidden');
+        };
+
         window.handleVoteSubmit = async () => {
             const id = document.getElementById('vote-costume-id').value;
             const target = costumes.find(c => c.id === id);
@@ -304,13 +329,6 @@
             showToast("Success!", "🗳️"); closeModal('vote-modal');
         };
 
-        window.openRemoveModal = (id) => {
-            const target = costumes.find(c => c.id === id);
-            document.getElementById('remove-costume-id').value = id;
-            document.getElementById('remove-confirm-text').innerHTML = `Remove support for <span class="text-[#FF5C5C] font-black">${target.costumeName}</span>?`;
-            document.getElementById('remove-vote-modal').classList.remove('hidden');
-        };
-
         window.handleRemoveVoteSubmit = async () => {
             const id = document.getElementById('remove-costume-id').value;
             await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayRemove(userLdap) });
@@ -318,7 +336,12 @@
             closeModal('remove-vote-modal');
         };
 
-        window.deleteEntry = async (id) => { if(confirm("Terminate manifest?")) await deleteDoc(doc(db, ...COSTUMES_PATH, id)); };
+        window.handleDeleteEntrySubmit = async () => {
+            const id = document.getElementById('delete-entry-id').value;
+            await deleteDoc(doc(db, ...COSTUMES_PATH, id));
+            showToast("Costume Removed", "🚨");
+            closeModal('delete-entry-modal');
+        };
 
         function renderRankings() {
             if (!ADMIN_LIST.includes(userLdap)) return;
@@ -382,7 +405,7 @@
             t.classList.remove('-translate-y-40'); setTimeout(() => t.classList.add('-translate-y-40'), 3000);
         }
 
-        window.onclick = (e) => { if (e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
+        window.onclick = (e) => { if (e.target.id && e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
     </script>
 </body>
 </html>
