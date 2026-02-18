@@ -57,29 +57,22 @@
         </div>
     </header>
 
-    <section class="admin-only container mx-auto max-w-5xl px-4 mt-6">
-        <div class="bg-purple-600 rounded-3xl p-4 shadow-xl flex items-center justify-between text-white">
-            <div class="flex items-center gap-3">
-                <span class="text-xl">🛠️</span>
-                <span class="font-black uppercase text-xs tracking-widest">Admin Control Center</span>
-            </div>
-            <div id="admin-actions"></div>
-        </div>
-    </section>
-
-    <section class="container mx-auto max-w-5xl px-4 mt-6">
-        <div class="bg-blue-50 border-2 border-blue-100 rounded-3xl p-5 shadow-sm flex items-center gap-4">
+    <section class="container mx-auto max-w-5xl px-4 mt-8">
+        <div class="bg-blue-50 border-2 border-blue-100 rounded-3xl p-5 md:p-6 shadow-sm flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
             <div class="bg-blue-500 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md flex-shrink-0">📢</div>
-            <p class="text-blue-800 text-sm md:text-base leading-snug">
-                Upload by <span class="font-bold">8:45 PM</span>. Voting <span class="font-bold">8:45 PM - 9:00 PM</span>. Cast 3 votes per category.
-            </p>
+            <div>
+                <h4 class="font-black text-blue-900 text-lg leading-tight mb-1">Join the contest!</h4>
+                <p class="text-blue-800 text-sm md:text-base leading-relaxed">
+                    Take a photo at the photo wall and upload it here! You may submit your photo until <span class="font-bold">8:45 PM</span>. Voting will run from <span class="font-bold">8:45 PM to 9:00 PM</span>. Starting at 8:45 PM, you can cast three votes for each category (Individual & Group). Voting ends at 9:00 PM. Winners will be announced following the judges' vote.
+                </p>
+            </div>
         </div>
     </section>
 
     <main class="container mx-auto max-w-5xl p-4 flex-grow relative">
         <div class="text-center py-6">
             <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2">Choose Your Side!</h2>
-            <p id="voting-status-msg" class="text-gray-500 font-semibold italic">Awaiting contestants...</p>
+            <p id="voting-status-msg" class="text-gray-500 font-semibold italic">Ready for battle...</p>
         </div>
 
         <div class="flex justify-center mb-8 sticky top-24 z-30">
@@ -91,7 +84,7 @@
 
         <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <section id="leaderboard-section" class="admin-only mt-16 mb-20">
+        <section id="leaderboard-section" class="admin-only mt-16 mb-24">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">🏆</div>
                 <h2 class="text-3xl font-bold text-[#4A435C]">Live Standings</h2>
@@ -111,6 +104,16 @@
         </section>
     </main>
 
+    <div class="admin-only fixed bottom-6 right-6 z-50">
+        <div id="admin-pill" class="bg-purple-600 text-white rounded-full shadow-2xl p-2 flex items-center gap-2 border-2 border-white/20 backdrop-blur-md">
+            <div class="pl-4 pr-2 py-1 border-r border-white/20">
+                <span class="text-[10px] font-black uppercase tracking-tighter block opacity-70">Admin Mode</span>
+                <span id="admin-status-text" class="text-xs font-bold leading-none">Ready</span>
+            </div>
+            <div id="admin-toggle-btn-target"></div>
+        </div>
+    </div>
+
     <footer class="text-center pb-8 pt-4">
         <button onclick="resetLdap()" class="text-gray-300 hover:text-gray-500 text-[10px] font-bold uppercase tracking-widest">Logout / Change Identity</button>
     </footer>
@@ -126,14 +129,14 @@
     </div>
 
     <div id="vote-modal" class="fixed inset-0 bg-[#4A435C]/60 backdrop-blur-sm hidden flex items-center justify-center z-[110] p-4">
-        <div class="bg-white rounded-[2rem] w-full max-w-sm shadow-2xl overflow-hidden">
+        <div class="bg-white rounded-[2rem] w-full max-sm shadow-2xl overflow-hidden">
             <div class="bg-[#FFC400] p-6 text-center text-white font-black text-2xl">👍 Awesome!</div>
             <form id="vote-form" onsubmit="handleVote(event)" class="p-6 space-y-4 text-center">
                 <input type="hidden" id="vote-costume-id">
                 <p id="voter-confirm-text" class="text-sm font-bold text-gray-500"></p>
                 <div class="grid grid-cols-2 gap-3">
                     <button type="button" onclick="closeVoteModal()" class="text-gray-400 font-bold">Cancel</button>
-                    <button type="submit" class="bg-[#FFC400] text-white font-black py-3 rounded-xl shadow-md border-b-4 border-[#FF8F00] active:border-b-0">Confirm</button>
+                    <button type="submit" class="bg-[#FFC400] text-white font-black py-3 rounded-xl border-b-4 border-[#FF8F00] active:border-b-0">Confirm</button>
                 </div>
             </form>
         </div>
@@ -168,7 +171,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -235,16 +238,17 @@
                         ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1">✅ Voted</div>` : ''}
                         
                         <div class="admin-only absolute top-4 left-4">
-                            <button onclick="deleteEntry('${c.id}')" class="bg-white p-2 rounded-full text-red-500 shadow-md">🗑️</button>
+                            <button onclick="deleteEntry('${c.id}')" class="bg-white/90 p-2 rounded-full text-red-500 shadow-md backdrop-blur-sm">🗑️</button>
                         </div>
                     </div>
                     <div class="p-5 flex flex-col flex-grow">
                         <h3 class="text-xl font-black text-[#4A435C]">${c.costumeName}</h3>
                         <p class="text-xs font-bold text-gray-400 uppercase">@${c.ldap}</p>
                         <div class="mt-auto pt-4">
-                            ${votingOpen ? (hasVoted ? `<button disabled class="w-full bg-green-50 text-green-500 font-black py-3 rounded-xl border-2 border-green-200">Selected</button>` : 
-                            `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl">Vote</button>`)
-                            : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl">🔒 Voted</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`)}
+                            ${votingOpen ? (hasVoted ? 
+                                `<button onclick="cancelVote('${c.id}')" class="w-full bg-white text-[#FF5C5C] font-black py-3 rounded-xl border-2 border-[#FF5C5C] hover:bg-red-50 transition">Remove Vote</button>` : 
+                                `<button onclick="openVoteModal('${c.id}')" class="w-full btn-waze-primary font-black py-3 rounded-xl">Vote</button>`)
+                                : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl">🔒 Voted</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl">🔒 Locked</button>`)}
                         </div>
                     </div>
                 </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold">Waiting for entries...</div>';
@@ -260,6 +264,16 @@
             if (catVotes >= 3) return showToast("Max 3 votes per category reached!", "🚫");
             await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayUnion(userLdap) });
             showToast("Vote Counted!", "🗳️"); closeVoteModal();
+        };
+
+        window.cancelVote = async (id) => {
+            if(!votingOpen) return showToast("Voting is closed!", "🔒");
+            if(confirm("Remove your vote for this costume?")) {
+                try {
+                    await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayRemove(userLdap) });
+                    showToast("Vote Removed", "🗑️");
+                } catch (e) { showToast("Error removing vote", "❌"); }
+            }
         };
 
         window.toggleVoting = async (state) => { await setDoc(doc(db, ...COSTUMES_PATH, '_config_'), { isOpen: state }, { merge: true }); };
@@ -278,9 +292,10 @@
         function updateUI() {
             document.getElementById('voting-status-msg').innerHTML = votingOpen ? `Voting is <span class="text-[#33CCFF] animate-pulse">LIVE</span>!` : `Voting starts at 8:45 PM.`;
             if(ADMIN_LIST.includes(userLdap)) {
-                document.getElementById('admin-actions').innerHTML = `
-                <button onclick="toggleVoting(${!votingOpen})" class="bg-white ${votingOpen?'text-red-500':'text-green-600'} font-black px-4 py-2 rounded-xl text-[10px] shadow-md">
-                    ${votingOpen ? '🛑 STOP VOTING' : '🟢 START VOTING'}
+                document.getElementById('admin-status-text').textContent = votingOpen ? 'Live' : 'Locked';
+                document.getElementById('admin-toggle-btn-target').innerHTML = `
+                <button onclick="toggleVoting(${!votingOpen})" class="px-5 py-2 rounded-full font-black text-[10px] uppercase shadow-inner transition-colors ${votingOpen ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400'}">
+                    ${votingOpen ? 'Stop' : 'Start'}
                 </button>`;
             }
         }
