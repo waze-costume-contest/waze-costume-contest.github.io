@@ -490,36 +490,43 @@
     window.handleUpload = async (e) => {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
-      const existingCostume = costumes.find(c => c.ldap && c.ldap.toLowerCase() === userLdap.toLowerCase());
-      if (existingCostume) {
-        showToast("Only one costume per LDAP is allowed.", "🚫");
-        return;
-      }
-      btn.disabled = true; btn.innerHTML = "DEPLOYING...";
-      const file = document.getElementById('file-input').files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async (event) => {
-        try {
-          await addDoc(collection(db, ...COSTUMES_PATH), {
-            ldap: userLdap, costumeName: document.getElementById('costume-name').value, image: event.target.result,
-            category: document.querySelector('input[name="contestType"]:checked').value, voters: [], createdAt: Date.now()
-          });
-          showToast("Success!", "🏟️");
-          closeModal('upload-modal');
-        } catch (error) {
-          showToast("Upload failed. Please try again.", "🔥");
-          console.error("Upload failed: ", error);
-        } finally {
-          btn.disabled = false;
-          btn.innerHTML = "Join the Battle 💥";
+      try {
+        const existingCostume = costumes.find(c => c.ldap && c.ldap.toLowerCase() === userLdap.toLowerCase());
+        if (existingCostume) {
+          showToast("Only one costume per LDAP is allowed.", "🚫");
+          return;
         }
-      };
-      reader.onerror = () => {
-        showToast("Error reading file.", "🔥");
+
+        const fileInput = document.getElementById('file-input');
+        if (!fileInput.files || !fileInput.files[0]) {
+          showToast("Please select an image.", "📸");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = "DEPLOYING...";
+
+        const file = fileInput.files[0];
+        const compressedImage = await compressImage(file);
+
+        await addDoc(collection(db, ...COSTUMES_PATH), {
+          ldap: userLdap,
+          costumeName: document.getElementById('costume-name').value,
+          image: compressedImage,
+          category: document.querySelector('input[name="contestType"]:checked').value,
+          voters: [],
+          createdAt: Date.now()
+        });
+
+        showToast("Success!", "🏟️");
+        closeModal('upload-modal');
+      } catch (error) {
+        console.error("Upload failed: ", error);
+        showToast("Upload failed. Please try again.", "�");
+      } finally {
         btn.disabled = false;
         btn.innerHTML = "Join the Battle 💥";
-      };
+      }
     };
 
     function showToast(m, i) {
