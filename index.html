@@ -507,12 +507,11 @@
         btn.innerHTML = "DEPLOYING...";
 
         const file = fileInput.files[0];
-        const compressedImage = await compressImage(file);
 
         await addDoc(collection(db, ...COSTUMES_PATH), {
           ldap: userLdap,
           costumeName: document.getElementById('costume-name').value,
-          image: compressedImage,
+          image: file,
           category: document.querySelector('input[name="contestType"]:checked').value,
           voters: [],
           createdAt: Date.now()
