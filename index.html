@@ -248,7 +248,10 @@
 
   window.saveInitialLdap = () => {
     const input = document.getElementById('initial-ldap').value.trim().toLowerCase();
-    if(!input) return;
+    if (!input) {
+      showToast("LDAP cannot be empty.", "🚫");
+      return;
+    }
     localStorage.setItem('voterLdap', input);
     userLdap = input;
     document.getElementById('disclosure-modal').classList.add('hidden');
@@ -425,7 +428,7 @@
     t.classList.remove('-translate-y-40'); setTimeout(() => t.classList.add('-translate-y-40'), 3000);
   }
 
-  window.onclick = (e) => { if (e.target.id && e.target.id.endsWith('modal')) e.target.classList.add('hidden'); };
+  window.onclick = (e) => { if (e.target.id && e.target.id.endsWith('modal') && e.target.id !== 'disclosure-modal') e.target.classList.add('hidden'); };
 </script>
 </body>
 </html>
