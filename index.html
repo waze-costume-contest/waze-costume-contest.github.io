@@ -104,34 +104,6 @@
 
 <body class="min-h-screen flex flex-col">
 
-  <!-- Sticky User & Vote Status Pill -->
-  <header class="sticky top-4 z-50 px-4">
-    <div
-      class="container mx-auto max-w-3xl bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-gray-100 px-4 py-2 flex justify-between items-center gap-2">
-      <div class="flex items-center gap-2.5 min-w-0">
-        <div
-          class="h-8 w-8 rounded-full flex items-center justify-center border-2 border-black bg-[#FBE352] flex-shrink-0 font-black text-xs">
-          ⚡
-        </div>
-        <div class="flex flex-col leading-tight min-w-0">
-          <h1 class="text-xs md:text-sm font-extrabold text-[#4A435C] truncate">Heroes <span
-              class="text-gray-400 font-normal">vs</span> Villains <span class="text-[#EE454D]">2026</span></h1>
-          <span id="user-display"
-            class="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate">Access
-            Granted</span>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2 flex-shrink-0">
-        <div id="vote-counter-pill"
-          class="flex bg-gray-50 px-3 py-1.5 rounded-full items-center gap-1.5 border border-gray-200">
-          <span id="remaining-votes" class="text-xs font-black text-[#32C2ED]">3</span>
-          <span class="text-[10px] font-bold text-gray-500 uppercase">Votes Left</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
   <!-- Upgraded Hero Section (from Voting App assets) -->
   <section class="container mx-auto max-w-2xl px-4 mt-6 space-y-5">
     <!-- 1. Top Banner -->
@@ -142,15 +114,15 @@
     <!-- 2. Middle Banner + Contest Instructions -->
     <div class="bg-[#FBE352] rounded-[1.75rem] overflow-hidden shadow-md">
       <!-- Top illustrated portion of middle banner.svg -->
-      <div class="w-full aspect-[1030/649] overflow-hidden border-b-[4px] border-white">
+      <div class="w-full aspect-[1030/649] overflow-hidden border-b-[4px] border-white relative">
         <img src="screens/middle%20banner.svg" alt="Join the Contest!" class="w-full h-auto block">
       </div>
       <!-- Bottom text portion matching Voting App@8x.png with updated 8:30 PM - 8:45 PM schedule -->
-      <div class="px-6 py-8 md:px-10 md:py-10 text-center text-black">
-        <h3 class="text-xl md:text-3xl font-extrabold leading-tight mb-4">
+      <div class="px-5 py-7 sm:px-8 sm:py-8 md:px-10 md:py-10 text-center text-black">
+        <h3 class="text-xl sm:text-2xl md:text-3xl font-extrabold leading-tight mb-3 md:mb-4">
           Take a photo at the photo wall<br>and upload it here!
         </h3>
-        <p class="text-sm md:text-lg font-medium leading-relaxed max-w-lg mx-auto">
+        <p class="text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-lg mx-auto">
           You may submit your photo until <span class="font-bold">8:30 PM</span>.<br>
           Voting will run from <span class="font-bold">8:30 PM to 8:45 PM</span>.<br>
           Starting at 8:30 PM, you can cast three votes<br class="hidden sm:inline">
@@ -164,9 +136,9 @@
 
     <!-- 3. Upload a Photo Button (matching botton.svg) -->
     <button onclick="openUploadModal()"
-      class="w-full bg-[#32C2ED] hover:bg-[#25b2dd] active:scale-[0.99] transition-all text-black font-black text-lg md:text-2xl uppercase tracking-wide py-4 md:py-5 px-6 rounded-full shadow-md flex items-center justify-center gap-4">
+      class="w-full bg-[#32C2ED] hover:bg-[#25b2dd] active:scale-[0.99] transition-all text-black font-black text-lg md:text-2xl uppercase tracking-wide py-4 md:py-5 px-6 rounded-full shadow-md flex items-center justify-center gap-3 md:gap-4">
       <span>UPLOAD A PHOTO</span>
-      <svg class="w-8 h-8 md:w-10 md:h-10 flex-shrink-0" viewBox="720 45 85 75" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-7 h-7 md:w-10 md:h-10 flex-shrink-0" viewBox="720 45 85 75" xmlns="http://www.w3.org/2000/svg">
         <polygon fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width="4.15"
           points="799.31 81.82 768.46 50.98 768.46 66.03 727.18 66.03 727.18 97.61 768.46 97.61 768.46 112.67 799.31 81.82" />
       </svg>
@@ -174,61 +146,91 @@
   </section>
 
   <main class="container mx-auto max-w-5xl p-4 flex-grow relative">
-    <div class="text-center py-6 md:py-10">
+    <div class="text-center pt-6 pb-4 md:pt-10 md:pb-6">
       <h2 class="text-3xl md:text-5xl font-black text-[#4A435C] mb-2 uppercase tracking-tighter">Choose Your Side</h2>
-      <p id="voting-status-msg" class="text-gray-500 font-semibold italic text-sm">Ready for battle...</p>
+      <p id="voting-status-msg" class="text-gray-500 font-semibold italic text-sm mb-4">Ready for battle...</p>
+
+      <!-- Logged-in User Identity Badge -->
+      <div class="inline-flex items-center gap-2 bg-white border-2 border-black rounded-full px-3.5 py-1.5 shadow-[0_3px_0_#000000]">
+        <span class="w-5 h-5 rounded-full bg-[#FBE352] border border-black flex items-center justify-center text-[11px]">👤</span>
+        <span class="text-[11px] font-bold text-gray-500 uppercase">Logged in as</span>
+        <span id="user-display" class="text-xs font-black text-black uppercase tracking-wider">Guest</span>
+        <button onclick="resetLdap()" class="ml-1 text-[10px] font-black uppercase text-[#32C2ED] hover:underline border-l border-gray-200 pl-2">Switch</button>
+      </div>
     </div>
 
-    <div class="flex justify-center mb-8 sticky top-20 z-40">
-      <div class="bg-white/95 backdrop-blur-sm p-1.5 rounded-full shadow-xl border-2 border-white inline-flex">
+    <div class="flex justify-center mb-8 sticky top-4 z-40">
+      <div class="bg-white/95 backdrop-blur-sm p-1.5 rounded-full shadow-[0_5px_0_#000000] border-[3px] border-black inline-flex flex-wrap justify-center gap-1.5">
         <button onclick="switchCategory('single')" id="tab-single"
-          class="tab-active px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm">👤 Individual</button>
+          class="tab-active px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-black flex items-center gap-2 transition">
+          <span>👤 Individual</span>
+          <span id="tab-badge-single" class="bg-[#FBE352] text-black border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black shadow-sm">3 votes left</span>
+        </button>
         <button onclick="switchCategory('group')" id="tab-group"
-          class="tab-inactive px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm">👨‍👩‍👧‍👦 Group</button>
+          class="tab-inactive px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-transparent flex items-center gap-2 transition">
+          <span>👨‍👩‍👧‍👦 Group</span>
+          <span id="tab-badge-group" class="bg-gray-100 text-gray-700 border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black">3 votes left</span>
+        </button>
       </div>
     </div>
 
     <div id="costume-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-    <section id="leaderboard-section" class="admin-only mt-16 mb-24 space-y-10">
+    <section id="leaderboard-section" class="admin-only mt-16 mb-24 space-y-10 border-t-4 border-dashed border-purple-300 pt-10">
+      <!-- Admin-Only Section Banner -->
+      <div class="bg-[#A08ABB] border-[3px] border-black rounded-2xl p-4 md:p-5 shadow-[0_5px_0_#000000] flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="bg-[#FBE352] border-2 border-black w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm">
+            🔒
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="bg-black text-[#FBE352] text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full">Admin Only</span>
+              <h2 class="text-base md:text-lg font-black text-white tracking-tight">Admin Dashboard — Hidden from Regular Users</h2>
+            </div>
+            <p class="text-xs text-purple-100 font-bold mt-0.5">Only admins can see the Winners Presentation Screens and the Live Vote Leaderboard below.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Winners' Screen Presentation View (from Winners' Screen.pdf) -->
       <div>
         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div class="flex items-center gap-3">
             <div
-              class="bg-[#FBE352] border-2 border-black w-10 h-10 rounded-xl flex items-center justify-center text-black font-bold shadow-md transform -rotate-3">
+              class="bg-[#FBE352] border-[3px] border-black ring-2 ring-white w-11 h-11 rounded-full flex items-center justify-center text-black font-black shadow-md">
               🎬</div>
             <div>
-              <h2 class="text-2xl font-bold text-[#4A435C]">Winners &amp; Front-Runners Screen (Desktop)</h2>
-              <p class="text-xs text-gray-400 font-semibold">Use ← / → arrow keys to switch slides during event presentation</p>
+              <h2 class="text-xl md:text-2xl font-black text-black tracking-tight">Winners &amp; Front-Runners Screen</h2>
+              <p class="text-xs text-gray-500 font-bold">Use ← / → arrow keys to switch slides during event presentation</p>
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="setStageSlide('group-frontrunners')" id="slide-btn-group-frontrunners"
-              class="px-3 py-1.5 rounded-full text-xs font-black bg-[#32C2ED] text-black border-2 border-black">1. Group Top 5</button>
-            <button onclick="setStageSlide('single-winners')" id="slide-btn-single-winners"
-              class="px-3 py-1.5 rounded-full text-xs font-bold bg-white text-gray-600 border border-gray-200">2. Individual Podium (Top 3)</button>
             <button onclick="setStageSlide('single-frontrunners')" id="slide-btn-single-frontrunners"
-              class="px-3 py-1.5 rounded-full text-xs font-bold bg-white text-gray-600 border border-gray-200">3. Individual Top 5</button>
+              class="px-3.5 py-1.5 rounded-full text-xs font-black bg-[#32C2ED] text-black border-2 border-black shadow-sm">1. Individuals</button>
+            <button onclick="setStageSlide('single-winners')" id="slide-btn-single-winners"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-gray-700 border-2 border-gray-200 hover:border-black transition">2. Individuals Winners</button>
+            <button onclick="setStageSlide('group-frontrunners')" id="slide-btn-group-frontrunners"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-gray-700 border-2 border-gray-200 hover:border-black transition">3. Groups</button>
             <button onclick="setStageSlide('group-winners')" id="slide-btn-group-winners"
-              class="px-3 py-1.5 rounded-full text-xs font-bold bg-white text-gray-600 border border-gray-200">4. Group Podium (Top 3)</button>
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-gray-700 border-2 border-gray-200 hover:border-black transition">4. Group Winners</button>
             <button onclick="openStagePresentation()"
-              class="px-3.5 py-1.5 rounded-full text-xs font-black bg-[#4A435C] text-white shadow hover:bg-black transition">🖥️ Present Full Screen</button>
+              class="px-4 py-1.5 rounded-full text-xs font-black bg-black text-[#FBE352] border-2 border-black shadow hover:bg-gray-900 transition">🖥️ Present Full Screen</button>
           </div>
         </div>
 
         <div id="winners-stage"
-          class="stage-bg-blue rounded-[2rem] shadow-2xl border-4 border-white p-6 md:p-12 aspect-video flex flex-col items-center justify-between text-center relative overflow-hidden select-none">
+          class="stage-bg-yellow rounded-[2rem] shadow-2xl border-4 border-white p-6 md:p-10 min-h-[420px] md:aspect-video flex flex-col items-center justify-between text-center relative overflow-hidden select-none">
           <!-- Roee's exact SVG jagged lightning-bolt background pattern -->
           <svg class="stage-lightning-svg absolute inset-0 w-full h-full object-cover pointer-events-none"
             viewBox="-34.41 -52.94 1072.24 765.89" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path id="stage-lightning-path" fill="#fef9d0" fill-rule="evenodd" opacity="0.35" stroke="#fef9d0"
+            <path id="stage-lightning-path" fill="#fef9d0" fill-rule="evenodd" opacity="0.7" stroke="#fef9d0"
               stroke-linejoin="round" stroke-width="3.77"
               d="M147.31-52.94L-34.41-23.44V14.14l201.11-53.34L20.74,49.91,443.39-52.94h-97.54L150.49-7.06l125.12-45.88h-128.3ZM502.12-52.94L409.99,1.7l249.83-54.65h-99.11l-9.62,2.06,4.63-2.06h-53.6ZM712.85-52.94L422.96,99.58l240.04-56.97-210.84,90.57,366.54-92.03-167.05,64.28L1037.83,9.33V-27.97l-387.81,93.95L821.95-7.06l-265.99,61.35,238.98-107.24h-82.09ZM432.76,24.95L84.12,121.02l87.16-49.58L-34.41,127.43v23.67l94.45-35.25L-31.71,185.06l308.5-85.74-174.32,100.2,160.56-48.55L26.78,317.28l385.34-120.86-120.42,88.83,436.95-140.48-152.53,85.74,215.61-68.18-414.01,229.32,149.09-36.15-239.69,145.65,378.46-114.66-96.34,77.47,295.89-98.13-270.66,193.16,228.22-68.17-128.45,78.5,343.59-97.22v-31.05l-180.74,53.9,135.33-73.34-261.48,69.21,264.92-191.1-283.27,83.67,110.1-67.14-402.54,121.89,269.51-147.71-153.68,42.35L1000.45,67.3l-275.24,96.07,164-91.93-461.03,144.61,127.3-76.44-404.84,112.59,231.66-154.94-115.83,24.79L432.76,24.95ZM1037.83,74.29l-236.97,158.22,202.73-45.29-100.56,75.96,134.79-40.73v-21.26l-40.72,15.24,40.72-30.13v-41.11l-116.95,36.18,116.95-77.04v-30.06ZM474.41,264.78L76.46,401.13l176.61-98.13L-8.41,381.5l105.51-59.91-131.51,40.22v15.14l30.58-11.98-30.58,22.77v24.19l118.89-36.63-118.12,86.77,357.82-123.96-250.01,168.37,133.03-53.71-241.6,159.06v4.79l147.56-47.13-147.56,96.89v10.47l359.73-111.5-127.3,88.83,261.48-98.13-256.89,129.12,194.96-44.42-130.59,72.17h142.58l263.25-76.3-122.03,76.3h21.78l360.58-97.99-222.49,95.03,327.17-108.9v-44.93l-322.58,84.63,138.77-79.54-541.31,144.62,224.78-118.79-151.38,37.19,306.21-166.31-346.35,114.66,110.1-71.27-394.51,119.82,192.67-115.69-194.96,64.04,270.66-170.44-111.24,34.09,255.75-168.37ZM474.41,264.78" />
           </svg>
 
           <!-- Top Horizontal Logo Header (matching Winners' Screen.pdf) -->
-          <div class="relative z-10 w-64 sm:w-80 md:w-[460px] lg:w-[540px] pt-1">
+          <div class="relative z-10 w-56 sm:w-72 md:w-[420px] lg:w-[500px] pt-1">
             <img src="screens/winners-logo.svg" alt="Waze Heroes vs Villains" class="w-full h-auto block drop-shadow-sm">
           </div>
 
@@ -237,58 +239,79 @@
 
           <!-- Circular Avatars Row (Top 5 Front-Runners or Top 3 Winners Podium) -->
           <div id="stage-entries-row"
-            class="relative z-10 w-full max-w-6xl flex flex-wrap md:flex-nowrap items-start justify-center gap-4 md:gap-8 lg:gap-10 my-auto py-2 px-2">
+            class="relative z-10 w-full max-w-6xl my-auto py-2 px-2">
           </div>
 
           <!-- Floating Presentation Controls (visible when in Full-Screen / Presentation Mode) -->
           <div id="stage-floating-controls"
-            class="hidden relative z-20 mt-2 bg-black/75 backdrop-blur-md text-white px-4 py-2 rounded-full items-center gap-2 text-xs font-bold shadow-xl border border-white/20">
+            class="hidden relative z-20 mt-2 bg-black/75 backdrop-blur-md text-white px-3 md:px-4 py-2 rounded-full flex-wrap items-center justify-center gap-1.5 md:gap-2 text-[11px] md:text-xs font-bold shadow-xl border border-white/20">
             <button onclick="prevStageSlide()" class="px-2.5 py-1 hover:bg-white/20 rounded-full transition">◀ Prev</button>
             <span id="stage-slide-indicator" class="px-2 text-[#FBE352] font-black">1 / 4</span>
             <button onclick="nextStageSlide()" class="px-2.5 py-1 hover:bg-white/20 rounded-full transition">Next ▶</button>
-            <span class="opacity-30">|</span>
-            <button onclick="toggleBrowserFullscreen()" class="px-2.5 py-1 hover:bg-white/20 rounded-full transition">⛶ OS Fullscreen</button>
-            <button onclick="closeStagePresentation()" class="px-2.5 py-1 bg-red-500/80 hover:bg-red-600 rounded-full transition">✖ Exit (Esc)</button>
+            <span class="opacity-30 hidden sm:inline">|</span>
+            <button onclick="toggleBrowserFullscreen()" class="px-2.5 py-1 hover:bg-white/20 rounded-full transition hidden sm:inline-block">⛶ OS Fullscreen</button>
+            <button onclick="closeStagePresentation()" class="px-2.5 py-1 bg-red-500/80 hover:bg-red-600 rounded-full transition">✖ Exit</button>
           </div>
         </div>
       </div>
 
-      <!-- Raw Vote Count Table -->
+      <!-- Upgraded Comic-Style Live Vote Leaderboard -->
       <div>
-        <div class="flex items-center gap-3 mb-6">
-          <div
-            class="bg-[#93E223] w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-md transform -rotate-3">
-            🏆</div>
-          <h2 class="text-2xl font-bold text-[#4A435C]">Leaderboard (<span id="leaderboard-cat-label">Individual</span>)</h2>
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <div
+              class="bg-[#32C2ED] border-[3px] border-black ring-2 ring-white w-11 h-11 rounded-full flex items-center justify-center text-black font-black shadow-md">
+              🏆</div>
+            <div>
+              <h2 class="text-xl md:text-2xl font-black text-black tracking-tight">Live Vote Leaderboard</h2>
+              <p class="text-xs text-gray-500 font-bold">Real-time vote standings for <span id="leaderboard-cat-label" class="text-black font-black">Individuals</span></p>
+            </div>
+          </div>
+          <div class="inline-flex bg-white p-1 rounded-full border-2 border-black shadow-sm">
+            <button onclick="switchCategory('single')" id="lb-tab-single"
+              class="px-4 py-1.5 rounded-full text-xs font-black bg-[#FBE352] text-black border-2 border-black">👤 Individuals</button>
+            <button onclick="switchCategory('group')" id="lb-tab-group"
+              class="px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 border-2 border-transparent">👨‍👩‍👧‍👦 Groups</button>
+          </div>
         </div>
-        <div class="bg-white rounded-[2rem] shadow-xl border-4 border-white overflow-hidden">
-          <table class="w-full text-left border-collapse">
-            <thead class="bg-gray-50 border-b border-gray-100">
-              <tr class="text-gray-400 text-xs uppercase font-bold">
-                <th class="p-4 pl-6">Rank</th>
-                <th class="p-4">Costume</th>
-                <th class="p-4">Secret Identity</th>
-                <th class="p-4 pr-6 text-right">Votes</th>
-              </tr>
-            </thead>
-            <tbody id="ranking-list" class="divide-y divide-gray-100"></tbody>
-          </table>
+
+        <div class="bg-white rounded-[1.75rem] border-[3px] border-black shadow-[0_6px_0_#000000] overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-[#32C2ED] border-b-[3px] border-black">
+                <tr class="text-black text-xs uppercase font-black tracking-wider">
+                  <th class="p-3.5 md:p-4 pl-5 md:pl-6 w-20">Rank</th>
+                  <th class="p-3.5 md:p-4">Costume</th>
+                  <th class="p-3.5 md:p-4">Participant</th>
+                  <th class="p-3.5 md:p-4 pr-5 md:pr-6 text-right">Votes</th>
+                </tr>
+              </thead>
+              <tbody id="ranking-list" class="divide-y-2 divide-gray-100"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <div class="admin-only fixed bottom-6 right-6 z-50">
-    <div id="admin-pill"
-      class="bg-purple-600 text-white rounded-full shadow-2xl p-1.5 flex items-center gap-2 border-2 border-white/20 backdrop-blur-md">
-      <div class="pl-4 pr-3 py-1 border-r border-white/10">
-        <span class="text-[9px] font-black uppercase block opacity-70">Voting Status</span>
-        <span id="admin-status-text" class="text-[11px] font-black uppercase tracking-widest leading-none">...</span>
-      </div>
-      <button onclick="toggleVotingFromPill()"
-        class="bg-white text-purple-600 font-black px-4 py-2 rounded-full text-[10px] uppercase shadow-md active:scale-95 transition-transform">Toggle</button>
+  <div class="admin-only fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
+    <div class="flex flex-col items-end gap-2">
       <button onclick="openStagePresentation()"
-        class="bg-[#FBE352] text-black font-black px-3.5 py-2 rounded-full text-[10px] uppercase shadow-md border border-black active:scale-95 transition-transform">🖥️ Winners Screen</button>
+        class="bg-[#FBE352] hover:bg-[#f5d936] text-black font-black px-3.5 py-2 md:px-4 md:py-2.5 rounded-full text-[11px] md:text-xs uppercase shadow-xl border-2 border-black active:scale-95 transition-all flex items-center gap-1.5">
+        <span>🖥️</span>
+        <span>Present Winners Screen</span>
+      </button>
+      <div id="admin-pill"
+        class="bg-purple-600 text-white rounded-full shadow-2xl p-1.5 flex items-center gap-2.5 md:gap-3 border-2 border-white/20 backdrop-blur-md">
+        <div class="pl-3.5 pr-2.5 py-1 border-r border-white/20 text-left">
+          <span class="text-[9px] font-black uppercase block opacity-75">Voting Status</span>
+          <span id="admin-status-text" class="text-xs font-black uppercase tracking-wider leading-none text-red-300">🔴 Closed</span>
+        </div>
+        <button id="admin-toggle-btn" onclick="toggleVotingFromPill()"
+          class="bg-white text-purple-700 hover:bg-purple-50 font-black px-3.5 md:px-4 py-2 rounded-full text-[11px] uppercase shadow-md active:scale-95 transition-transform">
+          Open Voting
+        </button>
+      </div>
     </div>
   </div>
 
@@ -299,7 +322,7 @@
       <h3 class="text-2xl font-black mb-2">Identify Yourself</h3>
       <p class="text-gray-500 mb-6 font-medium text-sm">Verify your <span class="font-bold text-[#32C2ED]">LDAP</span>
         to reveal your secret votes and join the fight.</p>
-      <input type="text" id="initial-ldap"
+      <input type="text" id="initial-ldap" onkeydown="if(event.key==='Enter') saveInitialLdap()"
         class="w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl font-black text-center mb-4 outline-none focus:border-[#32C2ED]"
         placeholder="LDAP">
       <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-6 flex gap-2 text-left">
@@ -392,7 +415,7 @@
         </div>
         <div class="border-4 border-dashed rounded-3xl p-6 text-center cursor-pointer hover:bg-gray-50"
           onclick="document.getElementById('file-input').click()">
-          <input type="file" id="file-input" class="hidden" accept="image/*" required onchange="previewImage(this)">
+          <input type="file" id="file-input" class="hidden" accept="image/*" onchange="previewImage(this)">
           <div id="upload-placeholder">
             <div class="text-3xl mb-1">📸</div>
             <div class="font-black text-[#32C2ED] uppercase text-[10px] tracking-widest leading-tight">Click to
@@ -419,11 +442,6 @@
     <span id="toast-icon" class="text-lg"></span> <span id="toast-msg"></span>
   </div>
 
-  <footer class="text-center pb-8 pt-4">
-    <button onclick="resetLdap()" class="text-gray-300 hover:text-gray-500 text-[10px] font-bold uppercase">Change
-      Identity</button>
-  </footer>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -439,13 +457,15 @@
     const COSTUMES_PATH = ['artifacts', 'waze-costumes-default', 'public', 'data', 'contest_entries'];
     const ADMIN_LIST = ['shirelk', 'frim', 'szilka', 'ronp'];
 
-    let costumes = [], votingOpen = false, activeCategory = 'single', userLdap = null, activeStageSlide = 'group-frontrunners';
+    let costumes = [], votingOpen = false, activeCategory = 'single', userLdap = null, activeStageSlide = 'single-frontrunners';
 
     async function init() {
-      await signInAnonymously(auth);
-      userLdap = localStorage.getItem('voterLdap');
+      const savedLdap = localStorage.getItem('voterLdap');
+      userLdap = savedLdap ? savedLdap.trim().toLowerCase() : null;
       if (!userLdap) document.getElementById('disclosure-modal').classList.remove('hidden');
       else applyIdentity();
+
+      renderGrid(); updateUI(); renderRankings();
 
       if (window.location.hash === '#winners') {
         window.openStagePresentation();
@@ -454,13 +474,21 @@
         if (window.location.hash === '#winners') window.openStagePresentation();
       });
 
+      try {
+        await signInAnonymously(auth);
+      } catch (err) {
+        console.warn("Anonymous auth warning:", err);
+      }
+
       onSnapshot(collection(db, ...COSTUMES_PATH), (snap) => {
         costumes = [];
         snap.forEach(d => {
-          if (d.id === '_config_') votingOpen = d.data().isOpen;
+          if (d.id === '_config_') votingOpen = Boolean(d.data().isOpen);
           else costumes.push({ id: d.id, ...d.data() });
         });
         renderGrid(); updateUI(); renderRankings();
+      }, (err) => {
+        console.error("Firestore snapshot error:", err);
       });
     }
     init();
@@ -487,29 +515,68 @@
     }
 
     window.toggleVotingFromPill = async () => {
-      await setDoc(doc(db, ...COSTUMES_PATH, '_config_'), { isOpen: !votingOpen }, { merge: true });
+      const nextState = !votingOpen;
+      votingOpen = nextState;
+      updateUI();
+      renderGrid();
+      try {
+        await setDoc(doc(db, ...COSTUMES_PATH, '_config_'), { isOpen: nextState }, { merge: true });
+        showToast(nextState ? "Voting is now OPEN!" : "Voting is now CLOSED.", nextState ? "🟢" : "🔒");
+      } catch (err) {
+        console.error("Failed to update voting status:", err);
+        showToast("Updated locally (Firestore sync error)", "⚠️");
+      }
     };
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
 
     function renderGrid() {
       const grid = document.getElementById('costume-grid');
       const filtered = costumes.filter(c => (c.category || 'single') === activeCategory);
-      const usedInCat = costumes.filter(c => (c.category || 'single') === activeCategory && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
-      document.getElementById('remaining-votes').textContent = 3 - usedInCat;
+
+      const usedSingle = costumes.filter(c => (c.category || 'single') === 'single' && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
+      const usedGroup = costumes.filter(c => (c.category || 'single') === 'group' && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
+      const leftSingle = Math.max(0, 3 - usedSingle);
+      const leftGroup = Math.max(0, 3 - usedGroup);
+
+      const tabBadgeSingle = document.getElementById('tab-badge-single');
+      const tabBadgeGroup = document.getElementById('tab-badge-group');
+      if (tabBadgeSingle) {
+        tabBadgeSingle.textContent = leftSingle === 0 ? '✅ All 3 used' : `${leftSingle} ${leftSingle === 1 ? 'vote' : 'votes'} left`;
+        tabBadgeSingle.className = leftSingle === 0
+          ? 'bg-green-500 text-white border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black shadow-sm'
+          : 'bg-[#FBE352] text-black border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black shadow-sm';
+      }
+      if (tabBadgeGroup) {
+        tabBadgeGroup.textContent = leftGroup === 0 ? '✅ All 3 used' : `${leftGroup} ${leftGroup === 1 ? 'vote' : 'votes'} left`;
+        tabBadgeGroup.className = leftGroup === 0
+          ? 'bg-green-500 text-white border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black shadow-sm'
+          : 'bg-[#FBE352] text-black border-2 border-black px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-black shadow-sm';
+      }
 
       grid.innerHTML = filtered.length ? filtered.sort((a, b) => b.createdAt - a.createdAt).map(c => {
         const hasVoted = userLdap && c.voters?.map(v => v.toLowerCase()).includes(userLdap);
+        const safeName = escapeHtml(c.costumeName);
+        const safeLdap = escapeHtml(c.ldap);
         return `
                 <div class="waze-card overflow-hidden flex flex-col h-full relative">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="${c.image}" class="w-full h-full object-cover">
+                        <img src="${c.image}" alt="${safeName}" class="w-full h-full object-cover">
                         ${hasVoted ? `<div class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full font-black shadow-lg border-2 border-white flex items-center gap-1 uppercase text-[10px]">✅ Selected</div>` : ''}
                         <div class="admin-only absolute top-4 left-4">
                             <button onclick="openDeleteEntryModal('${c.id}')" class="bg-white/90 p-2 rounded-full text-red-500 shadow-md">🗑️</button>
                         </div>
                     </div>
                     <div class="p-5 flex flex-col flex-grow">
-                        <h3 class="text-xl font-black text-[#4A435C]">${c.costumeName}</h3>
-                        <p class="text-xs font-bold text-gray-400 uppercase">@${c.ldap}</p>
+                        <h3 class="text-xl font-black text-[#4A435C] break-words">${safeName}</h3>
+                        <p class="text-xs font-bold text-gray-400 uppercase">@${safeLdap}</p>
                         <div class="mt-auto pt-4">
                             ${votingOpen ? (hasVoted ?
             `<button onclick="openRemoveModal('${c.id}')" class="w-full bg-white text-[#EE454D] font-black py-3 rounded-xl border-2 border-[#EE454D] hover:bg-red-50 transition text-xs">Remove Vote</button>` :
@@ -517,36 +584,56 @@
             : (hasVoted ? `<button disabled class="w-full bg-green-100 text-green-600 font-black py-3 rounded-xl text-xs uppercase tracking-wider">✅ Selected</button>` : `<button disabled class="w-full bg-gray-100 text-gray-400 font-bold py-3 rounded-xl text-xs uppercase tracking-wider">🔒 Locked</button>`)}
                         </div>
                     </div>
-                </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold uppercase tracking-widest text-xs">No signatures detected...</div>';
+                </div>`}).join('') : '<div class="col-span-full text-center py-20 text-gray-400 font-bold uppercase tracking-widest text-xs">No costumes uploaded in this category yet...</div>';
     }
 
     window.openVoteModal = (id) => {
+      if (!userLdap) {
+        document.getElementById('disclosure-modal').classList.remove('hidden');
+        return;
+      }
+      if (!votingOpen) return showToast("Voting is currently closed.", "🔒");
       const target = costumes.find(c => c.id === id);
+      if (!target) return;
+      const category = target.category || 'single';
+      const catVotes = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
+      if (catVotes >= 3) return showToast("Limit reached (3 votes per category)!", "🚫");
       document.getElementById('vote-costume-id').value = id;
-      document.getElementById('voter-confirm-text').innerHTML = `Submit support for <span class="text-[#32C2ED] font-black">${target.costumeName}</span>?`;
+      document.getElementById('voter-confirm-text').innerHTML = `Submit support for <span class="text-[#32C2ED] font-black">${escapeHtml(target.costumeName)}</span>?`;
       document.getElementById('vote-modal').classList.remove('hidden');
     };
 
     window.openRemoveModal = (id) => {
       const target = costumes.find(c => c.id === id);
+      if (!target) return;
       document.getElementById('remove-costume-id').value = id;
-      document.getElementById('remove-confirm-text').innerHTML = `Remove support for <span class="text-[#EE454D] font-black">${target.costumeName}</span>?`;
+      document.getElementById('remove-confirm-text').innerHTML = `Remove support for <span class="text-[#EE454D] font-black">${escapeHtml(target.costumeName)}</span>?`;
       document.getElementById('remove-vote-modal').classList.remove('hidden');
     };
 
     window.openDeleteEntryModal = (id) => {
       const target = costumes.find(c => c.id === id);
+      if (!target) return;
       document.getElementById('delete-entry-id').value = id;
-      document.getElementById('delete-confirm-text').innerHTML = `Permanently delete <span class="text-[#EE454D] font-black">${target.costumeName}</span>?`;
+      document.getElementById('delete-confirm-text').innerHTML = `Permanently delete <span class="text-[#EE454D] font-black">${escapeHtml(target.costumeName)}</span>?`;
       document.getElementById('delete-entry-modal').classList.remove('hidden');
     };
 
     window.handleVoteSubmit = async () => {
+      if (!userLdap) return;
+      if (!votingOpen) {
+        closeModal('vote-modal');
+        return showToast("Voting is currently closed.", "🔒");
+      }
       const id = document.getElementById('vote-costume-id').value;
       const target = costumes.find(c => c.id === id);
+      if (!target) return closeModal('vote-modal');
       const category = target.category || 'single';
       const catVotes = costumes.filter(c => (c.category || 'single') === category && c.voters?.map(v => v.toLowerCase()).includes(userLdap)).length;
-      if (catVotes >= 3) return showToast("Limit reached!", "🚫");
+      if (catVotes >= 3) {
+        closeModal('vote-modal');
+        return showToast("Limit reached!", "🚫");
+      }
       await updateDoc(doc(db, ...COSTUMES_PATH, id), { voters: arrayUnion(userLdap) });
       showToast("Success!", "🗳️"); closeModal('vote-modal');
     };
@@ -565,7 +652,7 @@
       closeModal('delete-entry-modal');
     };
 
-    const STAGE_SLIDE_ORDER = ['group-frontrunners', 'single-winners', 'single-frontrunners', 'group-winners'];
+    const STAGE_SLIDE_ORDER = ['single-frontrunners', 'single-winners', 'group-frontrunners', 'group-winners'];
     let isPresentationMode = false;
 
     window.setStageSlide = (slideId) => {
@@ -574,8 +661,8 @@
         const btn = document.getElementById(`slide-btn-${id}`);
         if (!btn) return;
         btn.className = id === slideId
-          ? 'px-3 py-1.5 rounded-full text-xs font-black bg-[#32C2ED] text-black border-2 border-black'
-          : 'px-3 py-1.5 rounded-full text-xs font-bold bg-white text-gray-600 border border-gray-200';
+          ? 'px-3.5 py-1.5 rounded-full text-xs font-black bg-[#32C2ED] text-black border-2 border-black shadow-sm'
+          : 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-gray-700 border-2 border-gray-200 hover:border-black transition';
       });
       const indicator = document.getElementById('stage-slide-indicator');
       if (indicator) {
@@ -614,6 +701,9 @@
       if (document.fullscreenElement) {
         document.exitFullscreen?.();
       }
+      if (window.location.hash === '#winners') {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
       const leaderboardSec = document.getElementById('leaderboard-section');
       if (leaderboardSec && !ADMIN_LIST.includes(userLdap)) {
         leaderboardSec.classList.add('admin-only');
@@ -648,7 +738,7 @@
 
     function renderComicStar(fillColor, posClass) {
       return `
-        <svg class="absolute ${posClass} w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 z-20 pointer-events-none drop-shadow-sm" viewBox="450 500 130 125" xmlns="http://www.w3.org/2000/svg">
+        <svg class="absolute ${posClass} w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 z-20 pointer-events-none drop-shadow-sm" viewBox="450 500 130 125" xmlns="http://www.w3.org/2000/svg">
           <polygon fill="none" stroke="#ffffff" stroke-linejoin="round" stroke-width="14"
             points="541.31 576.08 547.58 612.16 515.2 595.07 482.81 612.16 489.09 576.08 462.77 550.56 499.06 545.39 515.2 512.47 531.34 545.39 567.63 550.56 541.31 576.08" />
           <polygon fill="${fillColor}" stroke="#000000" stroke-linejoin="round" stroke-width="6"
@@ -664,38 +754,38 @@
       if (!stage || !titleBlock || !row) return;
 
       const slideConfigs = {
-        'group-frontrunners': {
-          cat: 'group', count: 5, isWinners: false, bgClass: 'stage-bg-blue', textClass: 'text-white',
-          lightningColor: '#a2dcf2', lightningOpacity: '0.45',
+        'single-frontrunners': {
+          cat: 'single', count: 5, isWinners: false, bgClass: 'stage-bg-yellow', textClass: 'text-black',
+          lightningColor: '#fef9d0', lightningOpacity: '0.7',
           ringClass: 'bg-white border-[3px] border-black ring-4 ring-white', badgeClass: '',
-          starColor: '#FBE352',
-          titleHtml: `<div class="text-xl md:text-3xl lg:text-4xl font-normal text-white leading-tight">Costume Contest Front-Runners</div><div class="text-2xl md:text-4xl lg:text-5xl font-black text-white leading-tight">Group Category</div>`
+          starColor: '#32C2ED',
+          titleHtml: `<div class="text-lg sm:text-xl md:text-2xl lg:text-4xl font-normal text-black leading-tight">Costume Contest Front-Runners</div><div class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black text-black leading-tight">Individuals Category</div>`
         },
         'single-winners': {
           cat: 'single', count: 3, isWinners: true, bgClass: 'stage-bg-blue', textClass: 'text-white',
           lightningColor: '#a2dcf2', lightningOpacity: '0.45',
           ringClass: 'bg-[#FBE352] border-[3px] border-black ring-4 ring-white', badgeClass: 'bg-[#FBE352] text-black',
           starColor: '',
-          titleHtml: `<div class="text-2xl md:text-4xl lg:text-5xl text-white"><span class="font-black">Individuals Category</span> <span class="font-normal">Winners</span></div>`
+          titleHtml: `<div class="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-white"><span class="font-black">Individuals Category</span> <span class="font-normal">Winners</span></div>`
         },
-        'single-frontrunners': {
-          cat: 'single', count: 5, isWinners: false, bgClass: 'stage-bg-yellow', textClass: 'text-black',
-          lightningColor: '#fef9d0', lightningOpacity: '0.7',
+        'group-frontrunners': {
+          cat: 'group', count: 5, isWinners: false, bgClass: 'stage-bg-blue', textClass: 'text-white',
+          lightningColor: '#a2dcf2', lightningOpacity: '0.45',
           ringClass: 'bg-white border-[3px] border-black ring-4 ring-white', badgeClass: '',
-          starColor: '#32C2ED',
-          titleHtml: `<div class="text-xl md:text-3xl lg:text-4xl font-normal text-black leading-tight">Costume Contest Front-Runners</div><div class="text-2xl md:text-4xl lg:text-5xl font-black text-black leading-tight">Individuals Category</div>`
+          starColor: '#FBE352',
+          titleHtml: `<div class="text-lg sm:text-xl md:text-2xl lg:text-4xl font-normal text-white leading-tight">Costume Contest Front-Runners</div><div class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black text-white leading-tight">Group Category</div>`
         },
         'group-winners': {
           cat: 'group', count: 3, isWinners: true, bgClass: 'stage-bg-yellow', textClass: 'text-black',
           lightningColor: '#fef9d0', lightningOpacity: '0.7',
           ringClass: 'bg-[#32C2ED] border-[3px] border-black ring-4 ring-white', badgeClass: 'bg-[#32C2ED] text-black',
           starColor: '',
-          titleHtml: `<div class="text-2xl md:text-4xl lg:text-5xl text-black"><span class="font-black">Group Category</span> <span class="font-normal">Winners</span></div>`
+          titleHtml: `<div class="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-black"><span class="font-black">Group Category</span> <span class="font-normal">Winners</span></div>`
         }
       };
 
-      const cfg = slideConfigs[activeStageSlide] || slideConfigs['group-frontrunners'];
-      stage.className = `${cfg.bgClass} ${isPresentationMode ? 'presentation-mode' : 'rounded-[2rem] shadow-2xl border-4 border-white p-6 md:p-10 aspect-video'} flex flex-col items-center justify-between text-center relative overflow-hidden select-none`;
+      const cfg = slideConfigs[activeStageSlide] || slideConfigs['single-frontrunners'];
+      stage.className = `${cfg.bgClass} ${isPresentationMode ? 'presentation-mode' : 'rounded-[2rem] shadow-2xl border-4 border-white p-5 sm:p-6 md:p-8 lg:p-10 min-h-[420px] md:aspect-video'} flex flex-col items-center justify-between text-center relative overflow-hidden select-none`;
       if (lightningPath) {
         lightningPath.setAttribute('fill', cfg.lightningColor);
         lightningPath.setAttribute('stroke', cfg.lightningColor);
@@ -709,13 +799,17 @@
 
       const slots = Array.from({ length: cfg.count }, (_, i) => sorted[i] || null);
       const ordinals = [
-        '1<sup class="text-[10px] md:text-xs font-extrabold">ST</sup>',
-        '2<sup class="text-[10px] md:text-xs font-extrabold">ND</sup>',
-        '3<sup class="text-[10px] md:text-xs font-extrabold">RD</sup>'
+        '1<sup class="text-[9px] md:text-xs font-extrabold">ST</sup>',
+        '2<sup class="text-[9px] md:text-xs font-extrabold">ND</sup>',
+        '3<sup class="text-[9px] md:text-xs font-extrabold">RD</sup>'
       ];
       const circleSize = cfg.isWinners
-        ? (isPresentationMode ? 'w-36 h-36 md:w-56 md:h-56 lg:w-64 lg:h-64 p-2.5' : 'w-28 h-28 md:w-44 md:h-44 p-2')
-        : (isPresentationMode ? 'w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 p-1.5' : 'w-20 h-20 md:w-32 md:h-32 p-1');
+        ? (isPresentationMode ? 'w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 lg:w-60 lg:h-60 p-2 md:p-2.5' : 'w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 p-1.5 md:p-2')
+        : (isPresentationMode ? 'w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 p-1.5' : 'w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 p-1');
+
+      row.className = cfg.isWinners
+        ? 'relative z-10 w-full max-w-5xl grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 items-start justify-items-center my-auto py-2 px-2'
+        : 'relative z-10 w-full max-w-6xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5 lg:gap-6 items-start justify-items-center my-auto py-2 px-2';
 
       // Exact star positions per circle index matching Winners' Screen.pdf pages 1 & 3
       const starPositionsByIdx = [
@@ -730,19 +824,21 @@
         const starsHtml = (!cfg.isWinners && cfg.starColor && starPositionsByIdx[idx])
           ? starPositionsByIdx[idx].map(pos => renderComicStar(cfg.starColor, pos)).join('')
           : '';
+        const safeName = entry ? escapeHtml(entry.costumeName) : 'Costume Name';
+        const safeLdap = entry ? `@${escapeHtml(entry.ldap)}` : 'Name';
         return `
-        <div class="flex flex-col items-center flex-1 min-w-[110px] max-w-[220px]">
-          <div class="relative ${circleSize} rounded-full ${cfg.ringClass} shadow-lg mb-3 md:mb-4">
+        <div class="flex flex-col items-center w-full max-w-[180px] ${!cfg.isWinners && idx === 4 ? 'col-span-2 sm:col-span-1' : ''}">
+          <div class="relative ${circleSize} rounded-full ${cfg.ringClass} shadow-lg mb-2.5 md:mb-3.5">
             ${cfg.isWinners ? `
-              <div class="absolute -top-2 -left-2 w-10 h-10 md:w-14 md:h-14 rounded-full ${cfg.badgeClass} border-[3px] border-black ring-4 ring-white flex items-center justify-center font-black text-sm md:text-xl z-20 shadow">
+              <div class="absolute -top-2 -left-2 w-9 h-9 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full ${cfg.badgeClass} border-[3px] border-black ring-4 ring-white flex items-center justify-center font-black text-xs md:text-lg lg:text-xl z-20 shadow">
                 ${ordinals[idx]}
               </div>` : starsHtml}
             <div class="w-full h-full rounded-full overflow-hidden bg-[#D1D3D4] border-2 border-black flex items-center justify-center">
-              ${entry ? `<img src="${entry.image}" alt="${entry.costumeName}" class="w-full h-full object-cover">` : `<span class="text-gray-400 text-2xl md:text-4xl">🦸</span>`}
+              ${entry ? `<img src="${entry.image}" alt="${safeName}" class="w-full h-full object-cover">` : `<span class="text-gray-400 text-2xl md:text-4xl">🦸</span>`}
             </div>
           </div>
-          <div class="font-extrabold text-xs md:text-lg lg:text-xl leading-tight ${cfg.textClass} truncate w-full px-1">${entry ? entry.costumeName : 'Costume Name'}</div>
-          <div class="font-normal text-[11px] md:text-base lg:text-lg ${cfg.textClass} truncate w-full px-1">${entry ? `@${entry.ldap}` : 'Name'}</div>
+          <div class="font-extrabold text-xs sm:text-sm md:text-base lg:text-lg leading-tight ${cfg.textClass} truncate w-full px-1">${safeName}</div>
+          <div class="font-normal text-[11px] sm:text-xs md:text-sm lg:text-base ${cfg.textClass} truncate w-full px-1">${safeLdap}</div>
         </div>
       `}).join('');
     }
@@ -750,15 +846,56 @@
     function renderRankings() {
       if (ADMIN_LIST.includes(userLdap)) {
         const catLabel = document.getElementById('leaderboard-cat-label');
-        if (catLabel) catLabel.textContent = activeCategory === 'single' ? 'Individual' : 'Group';
-        const sorted = costumes.filter(c => (c.category || 'single') === activeCategory).sort((a, b) => (b.voters?.length || 0) - (a.voters?.length || 0));
-        document.getElementById('ranking-list').innerHTML = sorted.map((c, i) => `
-                  <tr class="font-bold">
-                      <td class="p-4 pl-6 text-gray-400">#${i + 1}</td>
-                      <td class="p-4 text-[#4A435C]">${c.costumeName}</td>
-                      <td class="p-4 text-gray-500">@${c.ldap}</td>
-                      <td class="p-4 pr-6 text-right text-[#32C2ED] text-lg">${c.voters?.length || 0}</td>
-                  </tr>`).join('');
+        if (catLabel) catLabel.textContent = activeCategory === 'single' ? 'Individuals' : 'Groups';
+        const lbSingleBtn = document.getElementById('lb-tab-single');
+        const lbGroupBtn = document.getElementById('lb-tab-group');
+        if (lbSingleBtn && lbGroupBtn) {
+          lbSingleBtn.className = activeCategory === 'single'
+            ? 'px-4 py-1.5 rounded-full text-xs font-black bg-[#FBE352] text-black border-2 border-black'
+            : 'px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 border-2 border-transparent hover:text-black';
+          lbGroupBtn.className = activeCategory === 'group'
+            ? 'px-4 py-1.5 rounded-full text-xs font-black bg-[#FBE352] text-black border-2 border-black'
+            : 'px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 border-2 border-transparent hover:text-black';
+        }
+        const sorted = costumes
+          .filter(c => (c.category || 'single') === activeCategory)
+          .sort((a, b) => (b.voters?.length || 0) - (a.voters?.length || 0));
+
+        const rankBadges = [
+          `<span class="inline-flex w-9 h-9 rounded-full bg-[#FBE352] text-black border-2 border-black items-center justify-center font-black text-xs shadow-sm">1<sup class="text-[8px]">ST</sup></span>`,
+          `<span class="inline-flex w-9 h-9 rounded-full bg-[#32C2ED] text-black border-2 border-black items-center justify-center font-black text-xs shadow-sm">2<sup class="text-[8px]">ND</sup></span>`,
+          `<span class="inline-flex w-9 h-9 rounded-full bg-[#A08ABB] text-white border-2 border-black items-center justify-center font-black text-xs shadow-sm">3<sup class="text-[8px]">RD</sup></span>`
+        ];
+
+        document.getElementById('ranking-list').innerHTML = sorted.length ? sorted.map((c, i) => {
+          const badge = rankBadges[i] || `<span class="inline-flex w-9 h-9 rounded-full bg-gray-100 text-gray-700 border-2 border-gray-300 items-center justify-center font-black text-xs">#${i + 1}</span>`;
+          const rowBg = i === 0 ? 'bg-[#FEF9D0]/45' : (i < 3 ? 'bg-blue-50/30' : 'bg-white');
+          const safeName = escapeHtml(c.costumeName);
+          const safeLdap = escapeHtml(c.ldap);
+          return `
+            <tr class="${rowBg} hover:bg-gray-50 transition-colors">
+              <td class="p-3 md:p-4 pl-5 md:pl-6">${badge}</td>
+              <td class="p-3 md:p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden border-2 border-black bg-gray-100 flex-shrink-0">
+                    <img src="${c.image}" alt="${safeName}" class="w-full h-full object-cover">
+                  </div>
+                  <span class="font-black text-sm md:text-base text-black break-words">${safeName}</span>
+                </div>
+              </td>
+              <td class="p-3 md:p-4 font-bold text-xs md:text-sm text-gray-600 uppercase">@${safeLdap}</td>
+              <td class="p-3 md:p-4 pr-5 md:pr-6 text-right">
+                <span class="inline-flex items-center justify-center min-w-[2.5rem] px-3 py-1 rounded-full bg-[#FBE352] border-2 border-black text-black font-black text-sm md:text-base shadow-sm">
+                  ${c.voters?.length || 0}
+                </span>
+              </td>
+            </tr>`;
+        }).join('') : `
+          <tr>
+            <td colspan="4" class="p-8 text-center text-gray-400 font-bold uppercase tracking-widest text-xs">
+              No entries in this category yet...
+            </td>
+          </tr>`;
       }
       renderStage();
     }
@@ -767,21 +904,38 @@
       document.getElementById('voting-status-msg').innerHTML = votingOpen
         ? `The clash of powers is <span class="text-[#32C2ED] animate-pulse font-black uppercase">Live</span>! Voting closes at 8:45 PM.`
         : `Battle energy begins accumulating at 8:30 PM (Voting: 8:30 PM – 8:45 PM).`;
-      if (ADMIN_LIST.includes(userLdap)) {
-        const statusTxt = document.getElementById('admin-status-text');
-        statusTxt.textContent = votingOpen ? 'Open' : 'Closed';
-        statusTxt.className = votingOpen ? 'text-green-400 font-black' : 'text-red-400 font-black';
+      const statusTxt = document.getElementById('admin-status-text');
+      if (statusTxt) {
+        statusTxt.textContent = votingOpen ? '🟢 Open' : '🔴 Closed';
+        statusTxt.className = votingOpen
+          ? 'text-xs font-black uppercase tracking-wider leading-none text-green-300'
+          : 'text-xs font-black uppercase tracking-wider leading-none text-red-300';
+      }
+      const toggleBtn = document.getElementById('admin-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.textContent = votingOpen ? 'Close Voting' : 'Open Voting';
       }
     }
 
     window.switchCategory = (cat) => {
       activeCategory = cat;
-      document.getElementById('tab-single').className = cat === 'single' ? 'tab-active px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm' : 'tab-inactive px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm';
-      document.getElementById('tab-group').className = cat === 'group' ? 'tab-active px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm' : 'tab-inactive px-5 md:px-8 py-2 rounded-full font-bold text-xs md:text-sm';
+      document.getElementById('tab-single').className = cat === 'single'
+        ? 'tab-active px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-black flex items-center gap-2 transition'
+        : 'tab-inactive px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-transparent flex items-center gap-2 transition';
+      document.getElementById('tab-group').className = cat === 'group'
+        ? 'tab-active px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-black flex items-center gap-2 transition'
+        : 'tab-inactive px-4 sm:px-6 py-2.5 rounded-full font-black text-xs md:text-sm border-2 border-transparent flex items-center gap-2 transition';
       renderGrid(); renderRankings();
     };
 
-    window.openUploadModal = () => document.getElementById('upload-modal').classList.remove('hidden');
+    window.openUploadModal = () => {
+      if (!userLdap) {
+        document.getElementById('disclosure-modal').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('uploader-ldap-readonly').value = userLdap;
+      document.getElementById('upload-modal').classList.remove('hidden');
+    };
     window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
 
     window.previewImage = (input) => {
@@ -835,6 +989,11 @@
 
     window.handleUpload = async (e) => {
       e.preventDefault();
+      if (!userLdap) {
+        closeModal('upload-modal');
+        document.getElementById('disclosure-modal').classList.remove('hidden');
+        return;
+      }
       const btn = document.getElementById('submit-btn');
       try {
         const existingCostume = costumes.find(c => c.ldap && c.ldap.toLowerCase() === userLdap.toLowerCase());
@@ -849,6 +1008,12 @@
           return;
         }
 
+        const costumeNameVal = document.getElementById('costume-name').value.trim();
+        if (!costumeNameVal) {
+          showToast("Please enter a costume name.", "✏️");
+          return;
+        }
+
         btn.disabled = true;
         btn.innerHTML = "DEPLOYING...";
 
@@ -857,17 +1022,26 @@
         // and cannot store raw File objects.
         const compressedImage = await compressImage(file);
 
+        const selectedCat = document.querySelector('input[name="contestType"]:checked').value;
         await addDoc(collection(db, ...COSTUMES_PATH), {
           ldap: userLdap,
-          costumeName: document.getElementById('costume-name').value,
+          costumeName: costumeNameVal,
           image: compressedImage,
-          category: document.querySelector('input[name="contestType"]:checked').value,
+          category: selectedCat,
           voters: [],
           createdAt: Date.now()
         });
 
+        // Reset upload form & preview
+        document.getElementById('upload-form').reset();
+        document.getElementById('uploader-ldap-readonly').value = userLdap;
+        document.getElementById('preview-img').src = '';
+        document.getElementById('preview-img').classList.add('hidden');
+        document.getElementById('upload-placeholder').style.display = 'block';
+
         showToast("Success!", "🏟️");
         closeModal('upload-modal');
+        window.switchCategory(selectedCat);
       } catch (error) {
         console.error("Upload failed: ", error);
         showToast("Upload failed. Please try again.", "🔥");
